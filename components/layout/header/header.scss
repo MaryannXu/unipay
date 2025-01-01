@@ -1,0 +1,105 @@
+.header {
+    position: sticky;
+    top: 1.25rem;
+    z-index: 100;
+
+    padding: 1.5rem 2rem;
+    margin: 0 5%;
+
+    border: 1px solid var(--stripe-color);
+    background-color: var(--background-color);
+
+    user-select: none;
+
+    &__nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    &__logo {
+        display: flex;
+        width: 10%;
+        height: auto;
+
+        flex-shrink: 1;
+        margin-right: 1.5rem;
+
+
+        & svg {
+            width: 100%;
+        }
+    }
+
+    &__nav-list {
+        display: flex;
+        justify-content: space-evenly; /* Distributes items with equal space around them */
+        align-items: center;
+        width: 50%; /* Adjust this value to control how much of the header the nav occupies */
+
+        /* Optional: Ensure items are in a single line and handle wrapping if necessary */
+        flex-wrap: nowrap;
+    }
+
+    &__nav-item {
+        text-align: center;
+        opacity: 0;
+        animation: appear 500ms ease-out 1ms forwards;
+    }
+
+    @keyframes appear {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+
+    &__nav-button {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+
+        height: 100%;
+
+        cursor: pointer;
+
+        transition: opacity 200ms ease-out;
+
+        &:hover {
+            opacity: 0.6;
+        }
+    }
+
+    &__nav-text {
+        @extend %caps;
+
+        line-height: 1;
+        width: max-content;
+        transform: translateY(1px);
+    }
+
+    &__nav-icon {
+        display: grid;
+        align-items: center;
+    }
+}
+
+@media screen and (width < 768px) {
+    .header {
+        top: 1rem;
+        margin: 0 5%;
+        padding: 1.5rem 1.25rem;
+        margin: 0 3%;
+
+        &__nav-list {
+            grid-template-columns: 1fr 1px 8.25rem;
+            gap: 1.5rem;
+        }
+
+        &__nav-item {
+            gap: 0.5rem;
+        }
+    }
+}

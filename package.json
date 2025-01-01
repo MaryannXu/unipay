@@ -1,0 +1,38 @@
+{
+    "name": "unipay",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint"
+    },
+    "dependencies": {
+        "@babel/core": "^7.26.0",
+        "@babel/preset-env": "^7.26.0",
+        "@studio-freight/react-lenis": "^0.0.43",
+        "@vercel/analytics": "^1.2.2",
+        "babel-loader": "^9.2.1",
+        "firebase": "^9.23.0",
+        "firebaseui": "^6.1.0",
+        "framer-motion": "^11.15.0",
+        "lottie-react": "^2.4.0",
+        "next": "14.1.0",
+        "react": "^18",
+        "react-dom": "^18",
+        "react-firebase-hooks": "^5.1.1",
+        "react-intersection-observer": "^9.7.0",
+        "sharp": "^0.33.2"
+    },
+    "devDependencies": {
+        "@types/node": "^20",
+        "@types/react": "^18",
+        "@types/react-dom": "^18",
+        "eslint": "^8",
+        "eslint-config-next": "14.1.0",
+        "normalize.css": "^8.0.1",
+        "sass": "^1.83.0",
+        "typescript": "^5"
+    }
+}

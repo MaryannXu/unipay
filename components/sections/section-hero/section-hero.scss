@@ -1,0 +1,259 @@
+.section-hero {
+    &__container {
+        row-gap: 4rem;
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: 0;
+        height: 63rem;
+    }
+
+    &__text-container {
+        position: relative;
+        z-index: 1;
+
+        margin-top: 8rem;
+        margin-bottom: 0;
+        padding: 1rem;
+        grid-column: var(--grid-container-columns);
+    }
+
+    &__heading {
+        @extend %h1;
+
+        margin: 0 0 1.5rem 0;
+
+        & * {
+            font: inherit;
+        }
+
+        &-main {
+            margin: 0;
+            display: inline;
+        }
+    }
+
+    &__heading-roll {
+        display: inline-grid;
+        color: #1CA76B;
+
+        &-span {
+            grid-row: 1;
+            grid-column: 1;
+
+            opacity: 0;
+            transition: opacity 500ms ease-out, transform 750ms var(--ease-back);
+            transform: rotateX(90deg) translateZ(-3rem);
+            transform-style: preserve-3d;
+            color: #1CA76B;
+
+            &.active {
+                transform: translateZ(3rem);
+                opacity: 1;
+                color: #1CA76B;
+            }
+
+            &.hide {
+                transform: rotateX(-90deg) translateZ(-3rem);
+                opacity: 0;
+                color: #1CA76B;
+            }
+        }
+    }
+
+    &__subheading-layout {
+        margin-left: 1rem;
+
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    &__caption {
+
+        margin-top: 1.5rem;
+        max-width: 100rem;
+
+        @extend %body;
+    }
+
+    &__container {
+        row-gap: 8rem;
+    }
+
+    &__slider-wrapper {
+        margin: 0 auto;
+        padding: 0rem;
+
+        position: relative; // For proper positioning of child elements
+        grid-column: 1/6;
+        width: 50%;
+        height: 50%;
+        max-height: 64rem;
+
+        display: flex;
+        flex-direction: column; // Align elements vertically
+        align-items: center; // Center elements horizontally
+        justify-content: center; // Center elements vertically
+
+        & .section-hero__filler {
+            position: absolute;
+            top: 31%;
+            z-index: 10;
+            text-align: center;
+            font-size: 3rem;
+
+            // Make the text size responsive
+            @media screen and (max-width: 1024px) {
+                font-size: 2.5rem;
+                top: 16%;
+            }
+
+            @media screen and (max-width: 768px) {
+                font-size: 2rem;
+                top: 21%;
+            }
+
+            @media screen and (max-width: 480px) {
+                font-size: 1.5rem;
+            }
+        }
+
+        & .section-hero__interest-rate {
+            position: absolute;
+            top: 46%; // Adjust as needed for spacing between the filler text
+            z-index: 10;
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 500; // Less bold than the filler text
+
+            // Adjust text size for smaller screens
+            @media screen and (max-width: 1024px) {
+                font-size: 1.4rem;
+                top: 55%;
+            }
+
+            @media screen and (max-width: 768px) {
+                font-size: 1.2rem;
+                top: 60%;
+            }
+
+            @media screen and (max-width: 480px) {
+                font-size: 1rem;
+            }
+        }
+
+        & .section-hero__slider-button {
+            position: absolute;
+            top: 53%; // Adjust for placement under the filler statement
+            z-index: 10;
+            text-align: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+
+        }
+
+        & .lottie-loader {
+            filter: none;
+            width: 100%; // Ensure proper scaling
+            height: auto; // Maintain aspect ratio
+            max-width: 1000px;
+            margin: 0 0;
+            padding: 0;
+            z-index: 5; // Ensure it's under other elements
+        }
+    }
+
+
+
+
+    &__order-button {
+        @extend %btn-underline;
+    }
+
+
+    &__slider-button {
+        @extend %caps;
+
+        position: absolute;
+        top: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+
+        text-decoration: underline;
+        text-underline-offset: 4px;
+
+        height: 6rem;
+        width: 100%;
+        padding: 2.25rem;
+        grid-column: 4/6;
+
+        line-height: 1;
+
+        cursor: pointer;
+
+        background-color: transparent;
+
+        & > span {
+            font-size: inherit;
+        }
+
+        &:hover * {
+            opacity: 0.4;
+        }
+        & > * {
+            transition: opacity 200ms ease-out;
+        }
+    }
+
+}
+
+@media screen and (width < 768px) {
+    .section-hero {
+        &__container {
+            row-gap: 9rem;
+            margin-bottom: 0;
+        }
+
+        &__text-container {
+            margin-top: 5rem;
+            padding: 2rem;
+            grid-column: var(--grid-container-columns);
+        }
+
+        &__heading {
+            text-align: center;
+        }
+
+        &__subheading-layout {
+            margin-left: 0;
+            align-items: center;
+        }
+
+        &__caption {
+            text-align: center;
+        }
+
+        &__slider {
+            &::after {
+                content: none;
+            }
+        }
+
+        &__slider-button {
+            display: none;
+        }
+    }
+}
+
+@keyframes slide {
+    0% {
+        object-position: top;
+    }
+
+    100% {
+        object-position: bottom;
+    }
+}

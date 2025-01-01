@@ -1,0 +1,174 @@
+/*
+   login.scss
+   Make sure you have imported globals.scss before or that these variables
+   are available at runtime via your Next.js setup.
+   Otherwise, define your brand colors as custom properties here
+   in addition to the ones in globals.scss.
+
+   Example (if needed):
+   :root {
+     --brand-primary: #1CA76B;
+     --brand-secondary: #6FC8AA;
+     --brand-tertiary: #98D2DC;
+     --brand-quaternary: #D2DEA5;
+   }
+*/
+
+/* Container that vertically centers and provides spacing */
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  max-width: 600px;
+  margin: 6rem auto; /* more vertical spacing for a professional look */
+  padding: 0 1rem;
+
+  h1 {
+    font-size: 2rem; /* align with your typical heading sizes */
+    font-weight: 600;
+    margin-bottom: 2rem;
+    color: var(--main-color);
+    text-align: center;
+    transition: color 0.2s var(--quad);
+  }
+}
+
+/* Outlined box to frame the login section */
+.login-section {
+  width: 100%;
+  max-width: 420px;
+  padding: 2rem;
+  border: 1.5px solid var(--stripe-color);
+  border-radius: 0; /* sharp corners */
+  background-color: var(--background-color);
+  transition: background-color 0.3s var(--ease-back),
+  border-color 0.3s var(--ease-back);
+
+  /* Subtle shadow if desired */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Error message styling */
+.error-message {
+  margin-bottom: 1rem;
+  color: red;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* Form container */
+.login-form {
+  width: 100%;
+  margin-bottom: 1.5rem;
+
+  input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    background-color: transparent; /* or var(--background-color) if you prefer */
+    color: var(--main-color);
+    border: 1px solid var(--stripe-color);
+    border-radius: 0; /* sharp corners */
+    transition: border-color 0.2s, box-shadow 0.2s;
+
+    &:focus {
+      outline: none;
+      border-color: var(--main-color);
+      box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  .primary-button {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    font-weight: 500;
+    text-align: center;
+    color: #fff;
+    background-color: #1ca76b; /* or var(--brand-primary) if you define it globally */
+    border: none;
+    border-radius: 0; /* sharp corners */
+    cursor: pointer;
+    transition: background-color 0.3s var(--ease-back);
+
+    &:hover {
+      background-color: #6fc8aa; /* or var(--brand-secondary) */
+    }
+  }
+}
+
+/* Google sign-in button */
+.google-button {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  text-align: center;
+  color: #fff;
+  background-color: #98d2dc; /* or var(--brand-tertiary) */
+  border: none;
+  border-radius: 0; /* sharp corners */
+  cursor: pointer;
+  transition: background-color 0.3s var(--ease-back);
+
+  &:hover {
+    background-color: #6fc8aa; /* or var(--brand-secondary) */
+  }
+}
+
+/* Toggle link for switching between login/register */
+.toggle-link {
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: #1ca76b; /* or var(--brand-primary) if desired */
+  cursor: pointer;
+  text-align: center;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .login-container {
+    margin: 4rem auto;
+    padding: 0 1rem;
+
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+  }
+
+  .login-section {
+    padding: 1.5rem;
+  }
+
+  .login-form {
+    input {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.9rem;
+    }
+
+    .primary-button {
+      padding: 0.5rem;
+      font-size: 0.9rem;
+    }
+  }
+
+  .google-button {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .toggle-link {
+    font-size: 0.8rem;
+  }
+}

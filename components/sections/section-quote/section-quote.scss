@@ -1,0 +1,198 @@
+.section-quote {
+    position: relative;
+    padding-top: 5rem;
+    padding-bottom: 10rem;
+    min-height: 100vh; // Enough height to center content vertically
+    display: flex;
+    align-items: center; // Vertically center the quote content
+    justify-content: center;
+
+    background-color: var(--background-color); // Original background color from your files
+
+    /*
+      ─────────────────────────────────────────────────────────────
+      GALLERY: Absolutely-positioned behind the quote
+      ─────────────────────────────────────────────────────────────
+    */
+    &__gallery {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        overflow: hidden;
+        z-index: 1; // Behind the quote content (which is z-index: 2+)
+
+        &__wrapper {
+            position: relative;
+
+            top: -12.5vh;
+
+            height: 200vh;
+
+            display: flex;
+
+            gap: 2vw;
+
+            padding: 2vw;
+        }
+
+        &__column {
+            position: relative;
+
+            height: 100%;
+
+            width: 25%;
+
+            min-width: 250px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 2vw;
+
+            white-space: nowrap;
+
+            // Adjust initial top offsets for staggered parallax
+            &:nth-of-type(1) {
+                top: -30%;
+            }
+            &:nth-of-type(2) {
+                top: -70%;
+            }
+            &:nth-of-type(3) {
+                top: -30%;
+            }
+            &:nth-of-type(4) {
+                top: -60%;
+            }
+        }
+
+        &__image-container {
+            position: absolute;
+            height: 15%;
+            width: 100%;
+            position: relative;
+            border-radius: 1vw;
+
+            overflow: hidden;
+        }
+    }
+
+    /*
+      ─────────────────────────────────────────────────────────────
+      QUOTE CONTENT: sits above the gallery
+      ─────────────────────────────────────────────────────────────
+    */
+    &__container {
+        position: relative;
+        z-index: 3; // Above the gallery
+        text-align: center; // Center the quote content horizontally
+        row-gap: 1rem;
+        padding: 0 2rem;
+    }
+
+    &__top-line {
+        position: relative;
+        grid-column: var(--grid-container-columns);
+    }
+
+    &__list {
+        grid-column: var(--grid-container-columns);
+    }
+
+    &__quote-icon {
+        position: absolute;
+        top: -100%;
+        left: 0;
+    }
+
+    &__top-caption {
+        display: block;
+        width: 100%;
+        text-align: center;
+        font-weight: bolder;
+        @extend %caps; // Adjust or remove if you don’t have this placeholder
+    }
+
+    &-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+        padding: 0 2rem;
+    }
+
+    &-quote-text {
+        font-size: 3rem; // Slightly smaller for balance with smaller images
+        text-align: center;
+        font-weight: 400;
+        line-height: 150%;
+    }
+
+    &__person {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    &__person-image {
+        position: relative;
+        overflow: hidden;
+        width: 5rem;
+        height: 5rem;
+        background-color: var(--stripe-color);
+        border: 0.25rem solid var(--background-color);
+        border-radius: 1000rem;
+        box-shadow: 0 0 0 1px var(--stripe-color);
+    }
+
+    &__person-text {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+    }
+
+    &__person-name {
+        @extend %h4; // Adjust or remove if you don’t have this placeholder
+        font-weight: bolder;
+    }
+
+    &__person-position {
+        @extend %caps; // Adjust or remove if you don’t have this placeholder
+        font-weight: bolder;
+    }
+
+    /*
+      ─────────────────────────────────────────────────────────────
+      RESPONSIVE
+      ─────────────────────────────────────────────────────────────
+    */
+    @media screen and (width < 768px) {
+        &__container {
+            padding: 0;
+        }
+
+        &__quote-icon {
+            display: none;
+        }
+
+        &-item {
+            gap: 1.5rem;
+            padding: 0 1rem;
+        }
+
+        &-quote-text {
+            font-size: 1.25rem;
+            line-height: 140%;
+        }
+
+        &__person-image {
+            width: 4rem;
+            height: 4rem;
+        }
+    }
+}
+

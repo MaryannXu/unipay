@@ -1,0 +1,22 @@
+import CTAButton from '@/components/layout/cta-button/cta-button';
+import './section-join.scss';
+import Image from 'next/image';
+
+export default function SectionJoin() {
+    return (
+        <section id='join' className='section-join'>
+            <div className='container section-join__container'>
+                <div className='section-join__image-wrapper'>
+                    <Image src={'/img/unipaygradient.png'} alt='Join us' fill={true} sizes='30vw' />
+                </div>
+                <div className='section-join__content-wrapper'>
+                    <div className='section-join__heading-wrapper'>
+                        <small className='section-join__top-caption'>Turn ambition into opportunity</small>
+                        <h2 className='section-join__heading'>Support student success, gain returns, and strengthen your portfolio. </h2>
+                    </div>
+                    <CTAButton className='section-join__cta-button' text='Become an Investor' />
+                </div>
+            </div>
+        </section>
+    );
+}
