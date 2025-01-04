@@ -1,19 +1,3 @@
-/*
-   login.scss
-   Make sure you have imported globals.scss before or that these variables
-   are available at runtime via your Next.js setup.
-   Otherwise, define your brand colors as custom properties here
-   in addition to the ones in globals.scss.
-
-   Example (if needed):
-   :root {
-     --brand-primary: #1CA76B;
-     --brand-secondary: #6FC8AA;
-     --brand-tertiary: #98D2DC;
-     --brand-quaternary: #D2DEA5;
-   }
-*/
-
 /* Container that vertically centers and provides spacing */
 .login-container {
   display: flex;
@@ -21,8 +5,7 @@
   align-items: center;
   justify-content: center;
 
-  max-width: 600px;
-  margin: 6rem auto; /* more vertical spacing for a professional look */
+  margin: 6rem auto;
   padding: 0 1rem;
 
   h1 {
@@ -37,9 +20,10 @@
 
 /* Outlined box to frame the login section */
 .login-section {
+  z-index: 10;
   width: 100%;
-  max-width: 420px;
-  padding: 2rem;
+  max-width: 800px;
+  padding: 5rem;
   border: 1.5px solid var(--stripe-color);
   border-radius: 0; /* sharp corners */
   background-color: var(--background-color);
@@ -47,7 +31,7 @@
   border-color 0.3s var(--ease-back);
 
   /* Subtle shadow if desired */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.08);
 }
 
 /* Error message styling */
@@ -96,7 +80,7 @@
     transition: background-color 0.3s var(--ease-back);
 
     &:hover {
-      background-color: #6fc8aa; /* or var(--brand-secondary) */
+      background-color: #d4e6b8; /* or var(--brand-secondary) */
     }
   }
 }
@@ -110,14 +94,14 @@
   font-weight: 500;
   text-align: center;
   color: #fff;
-  background-color: #98d2dc; /* or var(--brand-tertiary) */
+  background-color: #98D2DC; /* or var(--brand-tertiary) */
   border: none;
   border-radius: 0; /* sharp corners */
   cursor: pointer;
   transition: background-color 0.3s var(--ease-back);
 
   &:hover {
-    background-color: #6fc8aa; /* or var(--brand-secondary) */
+    background-color: #d4e6b8; /* or var(--brand-secondary) */
   }
 }
 
@@ -133,6 +117,11 @@
   &:hover {
     text-decoration: underline;
   }
+}
+
+.eligible-link {
+  @extend %btn-underline;
+  padding-top: 10rem;
 }
 
 /* Responsive styles */

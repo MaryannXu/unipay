@@ -9,7 +9,7 @@ import {
     signInWithEmailAndPassword,
     createUserWithEmailAndPassword,
 } from "firebase/auth";
-import "@/styles/login.scss"; // Import your updated styles
+import "@/styles/login.scss";
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -105,6 +105,11 @@ const Login = () => {
                     ? "Already have an account? Login"
                     : "Don't have an account? Register"}
             </p>
+            {isRegistering && (
+                <p onClick={() => router.push("/eligibility")} className="eligible-link">
+                    Not sure if you are eligible? Check here
+                </p>
+            )}
         </div>
     );
 };
