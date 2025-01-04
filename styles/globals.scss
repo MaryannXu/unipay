@@ -56,6 +56,10 @@ html.dark {
     & .footer__logo {
         filter: invert(1);
     }
+
+    & .begin-button, .option-button, .back-button, .next-button {
+        color: black;
+    }
 }
 
 @media (prefers-color-scheme: dark) {
