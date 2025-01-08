@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import React, { useState, useEffect} from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { auth } from "@/firebaseConfig"; // Import Firebase config
 import {
     GoogleAuthProvider,
@@ -10,6 +10,8 @@ import {
     createUserWithEmailAndPassword,
 } from "firebase/auth";
 import "@/styles/login.scss";
+import Image from "next/image";
+import googleLogo from "@/public/img/google-logo.png";
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -17,6 +19,14 @@ const Login = () => {
     const [isRegistering, setIsRegistering] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string>("");
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const registeringParam = searchParams.get("registering");
+
+    useEffect(() => {
+        if (registeringParam === "true") {
+            setIsRegistering(true);
+        }
+    }, [registeringParam]);
 
     const handleGoogleLogin = async () => {
         const provider = new GoogleAuthProvider();
@@ -96,6 +106,10 @@ const Login = () => {
                 </div>
 
                 <button onClick={handleGoogleLogin} className="google-button">
+                    <Image className="google-logo"
+                           src={googleLogo}
+                           alt="Google"
+                    />
                     Sign in with Google
                 </button>
             </div>
