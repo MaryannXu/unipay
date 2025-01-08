@@ -87,12 +87,15 @@
 
 /* Google sign-in button */
 .google-button {
+  display: flex; /* Enables flexbox layout */
+  align-items: center; /* Vertically aligns content */
+  justify-content: center; /* Center-aligns logo and text */
+  gap: 0.5rem; /* Adds spacing between the logo and the text */
   width: 100%;
   padding: 0.75rem;
   margin-bottom: 0.5rem;
   font-size: 1rem;
   font-weight: 500;
-  text-align: center;
   color: #fff;
   background-color: #98D2DC; /* or var(--brand-tertiary) */
   border: none;
@@ -104,6 +107,13 @@
     background-color: #d4e6b8; /* or var(--brand-secondary) */
   }
 }
+
+.google-logo {
+  height: 2rem; /* Set the desired height */
+  width: auto; /* Maintains aspect ratio */
+  display: inline-block; /* Ensures it behaves like a graphic element */
+}
+
 
 /* Toggle link for switching between login/register */
 .toggle-link {
