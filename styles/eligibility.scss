@@ -34,6 +34,16 @@ h1 {
   color: var(--main-color);
 }
 
+.congrats-decision {
+  color: #1ca76b;
+  font-size: 2rem;
+  //color: var(--main-color);
+}
+
+.checkout {
+  margin-bottom: 1rem;
+}
+
 p {
   font-size: 1.2rem;
   margin-bottom: 2rem;
@@ -81,12 +91,41 @@ p {
   }
 }
 
+.not-eligible-link{
+  color: #1ca76b;
+  font-size: 1.2rem;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.css-1dimb5e-singleValue{
+  height: 75%;
+}
+
+.gpa-dropdown,
 .dropdown,
-.text-input,
-.date-picker {
+.text-input {
+  display: flex;
+  flex-direction: column;
   width: 80%;
   padding: 0.8rem;
   margin: 1rem auto;
+  border: 1px solid var(--stripe-color);
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.date-picker {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  padding: 0.8rem;
+  margin-left: 2.1rem;
+  margin-right: 1.8rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
   border: 1px solid var(--stripe-color);
   border-radius: 5px;
   font-size: 1rem;
