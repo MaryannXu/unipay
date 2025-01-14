@@ -95,9 +95,10 @@ export default function SectionQuote() {
                 <ul className="section-quote__list">
                     <li className="section-quote-item">
                         <q className="section-quote-quote-text">
-                            UniPay filler filler filler filler filler filler filler
-                            filler filler filler filler filler filler filler filler
-                            filler filler filler filler
+                        By combining advanced technology with a deep understanding 
+                        of global finance, UniPay empowers students to unlock their 
+                        potential and thrive in their academic journey. 
+                        
                         </q>
                         <div className="section-quote__person">
                             <div className="section-quote__person-image">

@@ -54,7 +54,7 @@ export default function SectionInnovation() {
                         <div className='section-innovation__grid-description'>
                             <h3 className='section-innovation__description-heading'>Community Driven</h3>
                             <p className='section-innovation__description-text'>
-                                We care about you. And so do others. That's why brings on alumni
+                                We care about you. And so do others. That's why we brings on alumni
                                 and other supporters of your university to form a community driven
                                 lending system.
                             </p>
