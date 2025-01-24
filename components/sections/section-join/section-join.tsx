@@ -1,8 +1,12 @@
-import CTAButton from '@/components/layout/cta-button/cta-button';
+"use client";
+
 import './section-join.scss';
 import Image from 'next/image';
+import { useRouter } from "next/navigation";
 
-export default function SectionJoin() {
+const SectionJoin = () => {
+    const router = useRouter();
+
     return (
         <section id='join' className='section-join'>
             <div className='container section-join__container'>
@@ -14,9 +18,13 @@ export default function SectionJoin() {
                         <small className='section-join__top-caption'>Turn ambition into opportunity</small>
                         <h2 className='section-join__heading'>Support student success, gain returns, and strengthen your portfolio. </h2>
                     </div>
-                    <CTAButton className='section-join__cta-button' text='Become an Investor' />
+                    <button className='section-join__cta-button' onClick={() => router.push("/investor-eligibility")}>
+                        Become an Investor
+                    </button>
                 </div>
             </div>
         </section>
     );
 }
+
+export default SectionJoin;

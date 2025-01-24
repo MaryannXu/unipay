@@ -7,6 +7,7 @@ import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import AuthButton from "@/components/AuthButton";
 import { useRouter } from "next/navigation";
+import { usePathname } from 'next/navigation';
 
 const HeaderLights = dynamic(() => import('./header-lights'), { ssr: false });
 
@@ -16,14 +17,20 @@ function HeaderLightsPlacehoder() {
 
 export default function Header() {
     const { isMenuOpened, setIsMenuOpened } = useContext(NavigationContext);
+    const router = useRouter();
+    const pathname = usePathname(); // Get current pathname
+    const isLandingPage = pathname === '/'; // Determine if it's the landing page
+    const isDashboard = pathname === '/dashboard';
 
     const handleClickMenu = () => setIsMenuOpened((prev) => !prev);
 
-    const router = useRouter();
+    // Conditionally set class names based on the current route
+    const headerClass = isLandingPage ? 'header sticky' : 'header normal';
+    const dashClass = isDashboard ? 'isDashboard' : 'notDashboard';
 
-    // @ts-ignore
+
     return (
-        <header className='header'>
+        <header className={`${headerClass} ${dashClass}`}>
             <nav className='header__nav'>
                 <span className='header__logo'>
                     <button
@@ -55,6 +62,7 @@ export default function Header() {
         </header>
     );
 }
+
 
 
 
