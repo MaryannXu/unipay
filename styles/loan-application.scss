@@ -1,0 +1,396 @@
+@import "@/styles/eligibility.scss";
+
+/* Overall page layout */
+.loan-application-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--background-color, #fff);
+}
+
+.loan-application-loading {
+  text-align: center;
+  margin-top: 3rem;
+  font-size: 1.25rem;
+}
+
+/* Sidebar that holds the vertical progress bar */
+.loan-application-sidebar {
+  width: 400px;
+  display: flex;
+  align-items: center;
+  margin-left: 5rem;
+
+  @media screen and (max-width: 768px) {
+    width: 250px;
+    margin-left: 1rem;
+  }
+}
+
+/* Progress bar container */
+.progress-container {
+  position: relative;
+  width: 20px;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* The unfilled line behind the circles */
+.progress-line {
+  position: absolute;
+  width: 4px;
+  background-color: #ccc;
+  top: 0;
+  bottom: 0;
+  left: 8px;
+  border-radius: 2px;
+}
+
+/* The filled portion that grows as the user proceeds */
+.progress-line-filled {
+  position: absolute;
+  width: 4px;
+  background-color: #10b981;
+  top: 0;
+  left: 8px;
+  border-radius: 2px;
+  transition: height 0.4s ease;
+}
+
+/* Step wrapper for each circle + label */
+.step-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 24px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+/* Step circle styling */
+.step-circle {
+  background-color: #ccc;
+  border: none;
+  outline: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #000;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+
+  &.completed {
+    background-color: #1ca76b;
+    color: #fff;
+  }
+}
+
+.step-label {
+  position: absolute;
+  left: 150%;
+  font-size: 0.9rem;
+  color: var(--main-color, #000);
+  white-space: nowrap;
+}
+
+/* Main content area */
+.loan-application-main {
+  flex: 1;
+  padding: 2rem 3rem;
+
+  .loan-application-step-title {
+    margin-bottom: 2rem;
+  }
+
+  .loan-application-step-description {
+    margin-top: 2rem;
+  }
+}
+
+/* Step 0: Persona Verification */
+.persona-verification-container {
+  text-align: center;
+  margin-top: 2rem;
+}
+.persona-button {
+  background-color: #2563eb;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #1d4ed8;
+  }
+}
+
+/* Step 1: Financial Status */
+.financial-status-step {
+  hr {
+    margin: 2rem 0;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 1rem;
+
+    input,
+    select {
+      margin-top: 0.25rem;
+      width: 100%;
+      max-width: 400px;
+      padding: 0.5rem;
+    }
+  }
+
+  .upload-container {
+    margin: 1rem 0;
+
+    label {
+      display: inline-block;
+      border: 1px solid #ccc;
+      padding: 0.75rem;
+      border-radius: 5px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #f5f5f5;
+      }
+
+      input {
+        display: none;
+      }
+    }
+  }
+}
+
+/* Step 2: Visa Status */
+.visa-status-step {
+  label {
+    display: block;
+    margin-bottom: 1.2rem;
+
+    input,
+    select {
+      margin-top: 0.25rem;
+      width: 100%;
+      max-width: 400px;
+      padding: 0.5rem;
+    }
+  }
+
+  .upload-container {
+    margin: 1rem 0;
+
+    label {
+      display: inline-block;
+      border: 1px solid #ccc;
+      padding: 0.75rem;
+      border-radius: 5px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #f5f5f5;
+      }
+
+      input {
+        display: none;
+      }
+    }
+  }
+}
+
+/* Step 3: Prior Academic History */
+.prior-academic-history-step {
+  .academic-history-card {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 1rem;
+    margin-top: 1.5rem;
+
+    label {
+      display: block;
+      margin-bottom: 1rem;
+
+      input,
+      select {
+        margin-top: 0.25rem;
+        width: 100%;
+        max-width: 400px;
+        padding: 0.5rem;
+      }
+    }
+
+    .upload-container {
+      margin: 1rem 0;
+
+      label {
+        display: inline-block;
+        border: 1px solid #ccc;
+        padding: 0.75rem;
+        border-radius: 5px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: #f5f5f5;
+        }
+
+        input {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .add-university-button {
+    margin-top: 1rem;
+    background-color: #2563eb;
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #1d4ed8;
+    }
+  }
+
+  .remove-card-button {
+    padding-top: 0.2rem;
+    padding-left: 0.6rem;
+    padding-right: 0.6rem;
+    float: right;
+    font-size: 1.3rem;
+    cursor: pointer;
+    &:hover {
+      color: #878787;
+    }
+  }
+}
+
+/* Step 4: Current Education + How are we going to help you */
+.current-education-step {
+  .academic-history-card {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 1rem;
+    margin-top: 1.5rem;
+
+    label {
+      display: block;
+      margin-bottom: 1rem;
+
+      input,
+      select {
+        margin-top: 0.25rem;
+        width: 100%;
+        max-width: 400px;
+        padding: 0.5rem;
+      }
+    }
+
+    .upload-container {
+      margin: 1rem 0;
+
+      label {
+        display: inline-block;
+        border: 1px solid #ccc;
+        padding: 0.75rem;
+        border-radius: 5px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: #f5f5f5;
+        }
+
+        input {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .section-divider {
+    margin: 2rem 0;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 1.2rem;
+
+    input,
+    select {
+      margin-top: 0.25rem;
+      width: 100%;
+      max-width: 400px;
+      padding: 0.5rem;
+    }
+  }
+
+  .upload-container {
+    margin: 1rem 0;
+    label {
+      display: inline-block;
+      border: 1px solid #ccc;
+      padding: 0.75rem;
+      border-radius: 5px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #f5f5f5;
+      }
+
+      input {
+        display: none;
+      }
+    }
+  }
+}
+
+/* Step 5: Review and Submit */
+.review-and-submit-step {
+  margin-top: 2rem;
+}
+
+/* Navigation Buttons */
+.loan-application-step-navigation {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+
+  .back-button,
+  .next-button,
+  .submit-button {
+    background-color: #2563eb;
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    &:hover:not(:disabled) {
+      background-color: #1d4ed8;
+    }
+  }
+}

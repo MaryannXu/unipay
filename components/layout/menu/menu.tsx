@@ -21,7 +21,6 @@ export default function Menu() {
         <div className={isMenuOpened ? 'menu visible' : 'menu'}>
             <div className='container menu__container'>
                 <MenuNav />
-                {/* <MenuSocials /> */}
             </div>
         </div>
     );

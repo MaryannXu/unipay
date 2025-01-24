@@ -1,15 +1,27 @@
 .header {
-    position: sticky;
-    top: 1.25rem;
     z-index: 100;
-
     padding: 1.5rem 2rem;
-    margin: 0 5%;
-
-    border: 1px solid var(--stripe-color);
-    background-color: var(--background-color);
-
     user-select: none;
+    transition: all 0.3s ease;
+
+    &.sticky {
+        position: sticky;
+        top: 1.25rem;
+        margin: 0 5%;
+        border: 1px solid var(--stripe-color);
+        background-color: var(--background-color);
+    }
+
+    &.normal {
+        position: relative;
+        background-color: var(--background-color);
+
+    }
+
+    &.isDashboard {
+        background: linear-gradient(to right, #f1f1f1 240px, white 240px);
+    }
+
 
     &__nav {
         display: flex;
@@ -88,10 +100,18 @@
 
 @media screen and (width < 768px) {
     .header {
-        top: 1rem;
-        margin: 0 5%;
+        //top: 1rem;
+        //margin: 0 5%;
         padding: 1.5rem 1.25rem;
-        margin: 0 3%;
+        //margin: 0 3%;
+
+        &.sticky {
+            margin: 0 5%;
+            margin: 0 3%;
+        }
+
+        &.normal {
+        }
 
         &__nav-list {
             grid-template-columns: 1fr 1px 8.25rem;

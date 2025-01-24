@@ -1,0 +1,47 @@
+.dashboard-container {
+  display: flex;
+  height: calc(100vh - 103px);
+}
+.dashboard-sidebar {
+  z-index: 10;
+  width: 240px;
+  background: #f1f1f1;
+  padding: 1rem;
+  .sidebar-logo {
+    font-weight: bold;
+    margin-bottom: 2rem;
+  }
+  .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    button {
+      margin-bottom: 1rem;
+      background: none;
+      border: none;
+      text-align: left;
+      &.active {
+        font-weight: bold;
+      }
+    }
+  }
+}
+.dashboard-main {
+  flex: 1;
+  padding: 2rem;
+  z-index: 10;
+  background-color: white;
+}
+
+@media screen and (width < 1700px) {
+  .dashboard-container {
+    display: flex;
+    height: calc(100vh - 68px);
+  }
+}
+
+@media screen and (width < 768px) {
+  .dashboard-container {
+    display: flex;
+    height: calc(100vh - 65px);
+  }
+}
