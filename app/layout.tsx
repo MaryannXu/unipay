@@ -9,6 +9,7 @@ import PopupContextProvider from '@/components/layout/popup-form/popup-context';
 import PopupForm from '@/components/layout/popup-form/popup-form';
 import ThemeContextProvider from '@/components/utils/theme-context/theme-context';
 import { Analytics } from '@vercel/analytics/react';
+import { AuthProvider } from '@/app/AuthContext';
 
 const manrope = Manrope({
     subsets: ['latin'],
@@ -25,6 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return (
         <html lang='ru' className={manrope.className}>
             <body>
+            <AuthProvider>
                 <ThemeContextProvider>
                     <PopupContextProvider>
                         <SmoothScrolling>
@@ -37,6 +39,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     </PopupContextProvider>
                 </ThemeContextProvider>
                 <Analytics />
+                </AuthProvider>
             </body>
         </html>
     );
