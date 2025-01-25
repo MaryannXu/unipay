@@ -103,8 +103,8 @@ export default function SectionQuote() {
                         <div className="section-quote__person">
                             <div className="section-quote__person-image">
                                 <Image
-                                    src={'/img/viterbi_dean.jpg'}
-                                    alt={'USC Viterbi Dean'}
+                                    src={'/img/jadenDhaliwal.jpg'}
+                                    alt={'USC Marshall Student'}
                                     fill
                                     sizes="(max-width: 768px) 200px, (max-width: 1200px) 400px"
                                 />
