@@ -5,6 +5,7 @@ import Icon_logo from '../../icons/black_inline_unilogo.png';
 import Icon_socials from '@/components/icons/Icon-socials';
 import { useLenis } from '@studio-freight/react-lenis';
 import Image from "next/image";
+import { usePathname } from 'next/navigation';
 
 type FooterNavItemProps = {
     name: string;
@@ -37,6 +38,24 @@ function FooterNavItem({ name, href }: FooterNavItemProps) {
 
 export default function Footer() {
     const lenis = useLenis();
+    const pathname = usePathname(); // Get current pathname
+
+    // Define paths where the footer should NOT be displayed
+    const excludedPaths = ['/dashboard', '/applications'];
+
+    const shouldExclude = excludedPaths.some((path) => {
+        // Ensure that '/applications' excludes all nested routes
+        if (path === '/applications') {
+            return pathname === path || pathname.startsWith(`${path}/`);
+        }
+        // For other paths like '/dashboard', exclude exact matches only
+        return pathname === path;
+    });
+
+    // If current pathname is in excludedPaths, do not render the footer
+    if (shouldExclude) {
+        return null;
+    }
 
     return (
         <footer className='footer'>
