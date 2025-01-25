@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import '@/components/sections/section-quote/section-quote.scss';
 
 import Lenis from '@studio-freight/lenis';
-import { useScroll, useTransform, motion } from 'framer-motion';
+import {useScroll, useTransform, motion, MotionValue} from 'framer-motion';
 
 import Icon_quote from '../../icons/icon-quote';
 import Image from 'next/image';
@@ -95,9 +95,10 @@ export default function SectionQuote() {
                 <ul className="section-quote__list">
                     <li className="section-quote-item">
                         <q className="section-quote-quote-text">
-                            UniPay filler filler filler filler filler filler filler
-                            filler filler filler filler filler filler filler filler
-                            filler filler filler filler
+                        By combining advanced technology with a deep understanding 
+                        of global finance, UniPay empowers students to unlock their 
+                        potential and thrive in their academic journey. 
+                        
                         </q>
                         <div className="section-quote__person">
                             <div className="section-quote__person-image">
@@ -126,9 +127,12 @@ export default function SectionQuote() {
 }
 
 // Renders one parallax column (3 images) with a dynamic "y" transform
-function Column({images,y}: {
+function Column({
+                    images,
+                    y,
+                }: {
     images: string[];
-    y: ReturnType<typeof useTransform>;
+    y: MotionValue<number>; // Explicitly specify number here
 }) {
     return (
         <motion.div className="section-quote__gallery__column" style={{ y }}>
@@ -138,10 +142,11 @@ function Column({images,y}: {
                         src={`/img/${src}`}
                         alt="image"
                         fill
-                        style={{ objectFit: 'contain', opacity: 0.3}}
+                        style={{ objectFit: 'contain', opacity: 0.3 }}
                     />
                 </div>
             ))}
         </motion.div>
     );
 }
+

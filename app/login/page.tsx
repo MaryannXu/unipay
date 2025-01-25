@@ -1,13 +1,16 @@
 // "use client";
 //
-// import React, { useState, useEffect} from "react";
+// import React, { useState, useEffect } from "react";
 // import { useRouter, useSearchParams } from "next/navigation";
-// import { auth } from "@/firebaseConfig"; // Import Firebase config
+// import { auth } from "@/firebaseConfig";
 // import {
 //     GoogleAuthProvider,
 //     signInWithPopup,
 //     signInWithEmailAndPassword,
 //     createUserWithEmailAndPassword,
+//     getAdditionalUserInfo, // <-- Import helper
+//     UserCredential,
+//     AdditionalUserInfo,
 // } from "firebase/auth";
 // import "@/styles/login.scss";
 // import Image from "next/image";
@@ -31,13 +34,31 @@
 //     const handleGoogleLogin = async () => {
 //         const provider = new GoogleAuthProvider();
 //         try {
-//             await signInWithPopup(auth, provider);
-//             router.push("/dashboard");
+//             // Sign in the user
+//             const userCredential = await signInWithPopup(auth, provider);
+//
+//             // Extract the AdditionalUserInfo object
+//             const additionalUserInfo = getAdditionalUserInfo(userCredential);
+//
+//             console.log("Full UserCredential:", userCredential);
+//             console.log("AdditionalUserInfo:", additionalUserInfo);
+//
+//             // Check if the user is new
+//             if (additionalUserInfo?.isNewUser) {
+//                 console.log("New user - redirecting to /loan-application");
+//                 router.push("/loan-application");
+//             } else {
+//                 console.log("Existing user - redirecting to /dashboard");
+//                 //TEMP TEMP TEMP TEMP TEMP TEMP
+//                 //router.push("/loan-application");
+//                 router.push("/dashboard");
+//             }
 //         } catch (error: any) {
 //             console.error("Google Sign-In failed", error);
 //             setErrorMessage("Google Sign-In failed.");
 //         }
 //     };
+//
 //
 //     const handleEmailLogin = async () => {
 //         setErrorMessage("");
@@ -52,9 +73,7 @@
 //             router.push("/dashboard");
 //         } catch (error: any) {
 //             console.error("Email/Password Login failed", error);
-//             setErrorMessage(
-//                 "Invalid username or password. Please try again."
-//             );
+//             setErrorMessage("Invalid username or password. Please try again.");
 //         }
 //     };
 //
@@ -68,7 +87,7 @@
 //
 //         try {
 //             await createUserWithEmailAndPassword(auth, email, password);
-//             router.push("/dashboard");
+//             router.push("/loan-application");
 //         } catch (error: any) {
 //             console.error("Registration failed", error);
 //             setErrorMessage("Registration failed. Please try again.");
@@ -106,10 +125,7 @@
 //                 </div>
 //
 //                 <button onClick={handleGoogleLogin} className="google-button">
-//                     <Image className="google-logo"
-//                            src={googleLogo}
-//                            alt="Google"
-//                     />
+//                     <Image className="google-logo" src={googleLogo} alt="Google" />
 //                     Sign in with Google
 //                 </button>
 //             </div>
@@ -130,9 +146,11 @@
 //
 // export default Login;
 
+
+
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { auth } from "@/firebaseConfig";
 import {
@@ -140,13 +158,13 @@ import {
     signInWithPopup,
     signInWithEmailAndPassword,
     createUserWithEmailAndPassword,
-    getAdditionalUserInfo, // <-- Import helper
-    UserCredential,
-    AdditionalUserInfo,
+    getAdditionalUserInfo,
 } from "firebase/auth";
 import "@/styles/login.scss";
 import Image from "next/image";
 import googleLogo from "@/public/img/google-logo.png";
+
+export const dynamic = "force-dynamic";
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -166,31 +184,18 @@ const Login = () => {
     const handleGoogleLogin = async () => {
         const provider = new GoogleAuthProvider();
         try {
-            // Sign in the user
             const userCredential = await signInWithPopup(auth, provider);
-
-            // Extract the AdditionalUserInfo object
             const additionalUserInfo = getAdditionalUserInfo(userCredential);
 
-            console.log("Full UserCredential:", userCredential);
-            console.log("AdditionalUserInfo:", additionalUserInfo);
-
-            // Check if the user is new
             if (additionalUserInfo?.isNewUser) {
-                console.log("New user - redirecting to /loan-application");
                 router.push("/loan-application");
             } else {
-                console.log("Existing user - redirecting to /dashboard");
-                //TEMP TEMP TEMP TEMP TEMP TEMP
-                //router.push("/loan-application");
                 router.push("/dashboard");
             }
         } catch (error: any) {
-            console.error("Google Sign-In failed", error);
             setErrorMessage("Google Sign-In failed.");
         }
     };
-
 
     const handleEmailLogin = async () => {
         setErrorMessage("");
@@ -204,7 +209,6 @@ const Login = () => {
             await signInWithEmailAndPassword(auth, email, password);
             router.push("/dashboard");
         } catch (error: any) {
-            console.error("Email/Password Login failed", error);
             setErrorMessage("Invalid username or password. Please try again.");
         }
     };
@@ -221,7 +225,6 @@ const Login = () => {
             await createUserWithEmailAndPassword(auth, email, password);
             router.push("/loan-application");
         } catch (error: any) {
-            console.error("Registration failed", error);
             setErrorMessage("Registration failed. Please try again.");
         }
     };
@@ -276,7 +279,10 @@ const Login = () => {
     );
 };
 
-export default Login;
-
-
-
+export default function SuspenseWrapper() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <Login />
+        </Suspense>
+    );
+}
