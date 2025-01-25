@@ -7,7 +7,7 @@ import "@/styles/eligibility.scss";
 import Confetti from "react-confetti";
 import { useWindowSize } from "react-use";
 import Link from "next/link";
-import Select from 'react-select';
+import Select, { SingleValue } from 'react-select';
 
 const universities = [
     { value: "", label: "Select" },
@@ -36,6 +36,11 @@ const countries = [
     { value: "Korea", label: "Korea" },
     { value: "Canada", label: "Canada" },
 ];
+
+type Option = {
+    value: string;
+    label: string;
+};
 
 const Eligibility = () => {
     const router = useRouter();
@@ -124,23 +129,21 @@ const Eligibility = () => {
     }
 
     // ---- Make sure we're storing the correct property in formData ----
-    const [selectedOptionSchool, setSelectedOptionSchool] = useState(null);
-    const handleChangeSchool = (selected) => {
+    const [selectedOptionSchool, setSelectedOptionSchool] = useState<SingleValue<Option>>(null);
+    const handleChangeSchool = (selected: SingleValue<Option>) => {
         setSelectedOptionSchool(selected);
         handleInputChange("school", selected?.value || "");
     };
 
-    const [selectedOptionDegree, setSelectedOptionDegree] = useState(null);
-    const handleChangeDegree = (selected) => {
+    const [selectedOptionDegree, setSelectedOptionDegree] = useState<SingleValue<Option>>(null);
+    const handleChangeDegree = (selected: SingleValue<Option>) => {
         setSelectedOptionDegree(selected);
-        // IMPORTANT: store under "highestDegree" to match your formData key
         handleInputChange("highestDegree", selected?.value || "");
     };
 
-    const [selectedOptionCountry, setSelectedOptionCountry] = useState(null);
-    const handleChangeCountry = (selected) => {
+    const [selectedOptionCountry, setSelectedOptionCountry] = useState<SingleValue<Option>>(null);
+    const handleChangeCountry = (selected: SingleValue<Option>) => {
         setSelectedOptionCountry(selected);
-        // IMPORTANT: store under "homeCountry" to match your formData key
         handleInputChange("homeCountry", selected?.value || "");
     };
     // ------------------------------------------------------------------
