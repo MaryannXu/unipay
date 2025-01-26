@@ -111,11 +111,11 @@ export default function SectionQuote() {
                             </div>
                             <div className="section-quote__person-text">
                                 <strong className="section-quote__person-name">
-                                    YANNIS C. YORTSOS
+                                    Jaden Dhaliwal
                                 </strong>
                                 <small className="section-quote__person-position">
-                                    Dean, <br /> USC Viterbi
-                                    School of Engineering
+                                    Student, <br /> USC Marshall
+                                    School of Business
                                 </small>
                             </div>
                         </div>
