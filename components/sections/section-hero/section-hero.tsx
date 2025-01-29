@@ -21,7 +21,7 @@ export default function SectionHero() {
                     <div className="section-hero__subheading-layout">
                         <p className="section-hero__caption">
                             UniPay is a new way to finance your studies in the U.S—one where we care about your future
-                            success.
+                            success. TEST MERGE
                         </p>
                         <button className="section-hero__order-button"
                                 onClick={() => router.push("/eligibility")}>Start Now
