@@ -95,23 +95,24 @@ export default function SectionQuote() {
                 <ul className="section-quote__list">
                     <li className="section-quote-item">
                         <q className="section-quote-quote-text">
-                        By combining advanced technology with a deep understanding 
-                        of global finance, UniPay empowers students to unlock their 
+                        I've struggled to find the right financing for my education.
+                        UniPay's combination of technology and deep understanding 
+                        of global finance, empowers students like me to unlock their 
                         potential and thrive in their academic journey. 
                         
                         </q>
                         <div className="section-quote__person">
                             <div className="section-quote__person-image">
                                 <Image
-                                    src={'/img/jadenDhaliwal.jpg'}
-                                    alt={'USC Marshall Student'}
+                                    src={'/img/jadenDahliwal.jpg'}
+                                    alt={'USC Viterbi Dean'}
                                     fill
                                     sizes="(max-width: 768px) 200px, (max-width: 1200px) 400px"
                                 />
                             </div>
                             <div className="section-quote__person-text">
                                 <strong className="section-quote__person-name">
-                                    Jaden Dhaliwal
+                                    Jaden Dalhiwal
                                 </strong>
                                 <small className="section-quote__person-position">
                                     Student, <br /> USC Marshall
