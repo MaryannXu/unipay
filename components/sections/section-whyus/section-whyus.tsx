@@ -66,9 +66,7 @@ export default function SectionWhyus() {
                         </h3>
                         <p className='section-whyus__bullets-text'>
                             Our mission is to financially support you and for us that means
-                            saving you money. We offer rates that cut the global average and
-                            partner with WISE transfer to provide you the money transfers
-                            lowest rates.
+                            saving you money. We offer rates that cut the global average.
                         </p>
                     </div>
 
@@ -80,7 +78,7 @@ export default function SectionWhyus() {
                             When assessing your eligibility, we don’t just look at your
                             credit. We look at the whole pie. By assessing data points that
                             predict your growth potential after university, we can better
-                            suit your wants and needs.
+                            suit your needs.
                         </p>
                     </div>
 
