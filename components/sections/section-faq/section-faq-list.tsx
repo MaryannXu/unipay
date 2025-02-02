@@ -28,7 +28,7 @@ function SectionFaqItem({ heading, text }: ItemProps) {
 const LIST: ItemProps[] = [
     {
         heading: 'Can UniPay provide a letter of financial support?',
-        text: 'Upon credit approval, MPOWER is able to issue support letters to assist our applicants with the visa process at no cost. You will need to provide the Support Letter to your school in order to receive the I-20.',
+        text: 'Upon credit approval, UniPay is able to issue support letters to assist our applicants with the visa process at no cost. You will need to provide the Support Letter to your school in order to receive the I-20.',
     },
     {
         heading: 'What is the loan repayment process like?',
