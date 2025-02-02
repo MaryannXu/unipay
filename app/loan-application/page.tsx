@@ -83,6 +83,26 @@ export default function LoanApplicationPage() {
         return () => unsubscribe();
     }, [router]);
 
+    // send user_id and app_id after reviewing and submitting application
+    async function sendApplicationSubmitted(userId: string, appId: string) {
+        try {
+            const response = await fetch("http://127.0.0.1:5000/application_submitted", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    user_id: userId,
+                    app_id: appId
+                })
+            });
+    
+            const data = await response.json();
+            console.log("Response from server:", data);
+        } catch (error) {
+            console.error("Error sending application submitted request:", error);
+        }
+    }
     // Submit function that CREATES a new doc each time
     const handleSubmitApplication = async () => {
         try {
@@ -91,7 +111,6 @@ export default function LoanApplicationPage() {
                 alert("No user is logged in. Unable to save data.");
                 return;
             }
-
             // Gather all form data
             const applicationData = {
                 step0Verified,
@@ -124,9 +143,13 @@ export default function LoanApplicationPage() {
             };
 
             // CREATE a new doc in /users/<uid>/loanApplications
-            await addDoc(collection(db, "users", user.uid, "loanApplications"), applicationData);
+            const docRef = await addDoc(collection(db, "users", user.uid, "loanApplications"), applicationData);
 
             alert("Application data saved to Firestore!");
+
+            //Send to Server(Flask)
+            const appId = docRef.id
+            sendApplicationSubmitted(user.uid, appId);
             // redirect to dashboard
             router.push("/dashboard");
         } catch (error) {
