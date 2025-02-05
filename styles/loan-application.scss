@@ -1,16 +1,27 @@
 @import "@/styles/eligibility.scss";
 
-/* Overall page layout */
+/* Center the overall page container and give the site a subtle background */
 .loan-application-container {
   display: flex;
   min-height: 100vh;
-  background-color: var(--background-color, #fff);
+  align-items: center;         // Vertically center the content
+  justify-content: center;     // Horizontally center the content
+  background-color: var(--background-color, #f5f5f5);
+  padding: 2rem;               // Ensure some spacing on smaller screens
 }
 
-.loan-application-loading {
-  text-align: center;
-  margin-top: 3rem;
-  font-size: 1.25rem;
+/* NEW: A wrapper for the actual loan application panel */
+.loan-application-content {
+  display: flex;
+  width: 100%;
+  max-width: 1400px;           // Adjust to suit your design
+  padding: 2rem;
+  background-color: var(--background-color);
+  z-index: 100;
+  transition: background-color 0.3s var(--ease-back),
+  border-color 0.3s var(--ease-back);  border: 1px solid #ddd;      // A border similar to your card borders
+  border-radius: 6px;          // Slight rounding to match other elements
+  overflow: hidden;            // Keeps inner elements neat if they overflow
 }
 
 /* Sidebar that holds the vertical progress bar */
@@ -18,11 +29,10 @@
   width: 400px;
   display: flex;
   align-items: center;
-  margin-left: 5rem;
+  padding: 2rem;               // Use padding instead of a left margin so it sits nicely in the panel
 
   @media screen and (max-width: 768px) {
     width: 250px;
-    margin-left: 1rem;
   }
 }
 
@@ -104,10 +114,17 @@
 /* Main content area */
 .loan-application-main {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;    // centers children horizontally
+  justify-content: center; // centers children vertically
   padding: 2rem 3rem;
+  text-align: center;
+
 
   .loan-application-step-title {
     margin-bottom: 2rem;
+    text-align: center;
   }
 
   .loan-application-step-description {
@@ -363,11 +380,13 @@
 /* Step 5: Review and Submit */
 .review-and-submit-step {
   margin-top: 2rem;
+  text-align: center;
 }
 
 /* Navigation Buttons */
 .loan-application-step-navigation {
   margin-top: 2rem;
+  margin-bottom: 2rem;
   display: flex;
   justify-content: space-between;
   gap: 1rem;
@@ -394,3 +413,4 @@
     }
   }
 }
+
