@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { auth, db } from "@/firebaseConfig";
 import { doc, collection, addDoc } from "firebase/firestore";
 import "@/styles/loan-application.scss";
+import { getAuth } from "firebase/auth";
+
 
 // Steps data (unchanged)
 const steps = [
@@ -82,24 +84,37 @@ export default function LoanApplicationPage() {
     // send user_id and app_id after reviewing and submitting application
     async function sendApplicationSubmitted(userId: string, appId: string) {
         try {
-            const response = await fetch("http://127.0.0.1:5000/application_submitted", {
+            const auth = getAuth();
+            const user = auth.currentUser;
+            
+            if (!user) {
+                console.error("No authenticated user.");
+                return;
+            }
+            console.log("authenticated user")
+            // Get Firebase ID token
+            const token = await user.getIdToken(); // Get JWT token
+            console.log(token)
+            const response = await fetch("/api/application_submitted", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,  
                 },
                 body: JSON.stringify({
                     user_id: userId,
                     app_id: appId,
                 }),
             });
-
+    
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+    
             const data = await response.json();
             console.log("Response from server:", data);
         } catch (error) {
             console.error("Error sending application submitted request:", error);
         }
     }
-
     // Submit function that CREATES a new doc each time
     const handleSubmitApplication = async () => {
         try {
@@ -140,16 +155,16 @@ export default function LoanApplicationPage() {
             };
 
             // CREATE a new doc in /users/<uid>/loanApplications
-            const docRef = await addDoc(
-                collection(db, "users", user.uid, "loanApplications"),
-                applicationData
-            );
-
-            alert("Application data saved to Firestore!");
-
-            // Send to Server (Flask)
-            const appId = docRef.id;
-            sendApplicationSubmitted(user.uid, appId);
+            try {
+                const docRef = await addDoc(
+                    collection(db, "users", user.uid, "loanApplications"),
+                    applicationData
+                );
+                alert("Application data saved to Firestore!");
+                sendApplicationSubmitted(user.uid, docRef.id);
+            } catch (error) {
+                console.error("Firestore Write Error:", error);
+            }
             // Redirect to dashboard
             router.push("/loan-offer");
         } catch (error) {
