@@ -1,0 +1,109 @@
+{
+  "pages": {
+    "/_not-found": [
+      "static/chunks/webpack-121082f698a87174.js",
+      "static/chunks/fd9d1056-f37f35a3f4ea20d1.js",
+      "static/chunks/69-1bbdb4b3053977b3.js",
+      "static/chunks/main-app-51adad727d2499ae.js",
+      "static/chunks/app/_not-found-7e6b281071fbf349.js"
+    ],
+    "/layout": [
+      "static/chunks/webpack-121082f698a87174.js",
+      "static/chunks/fd9d1056-f37f35a3f4ea20d1.js",
+      "static/chunks/69-1bbdb4b3053977b3.js",
+      "static/chunks/main-app-51adad727d2499ae.js",
+      "static/chunks/bc9e92e6-bf3fe644e8a736f2.js",
+      "static/chunks/36546cfe-99ce74d20f54e220.js",
+      "static/chunks/398-7675f0715cafb35e.js",
+      "static/chunks/703-c5b120af33898650.js",
+      "static/chunks/324-6a332cf5ab941951.js",
+      "static/css/5eb4a1cf26469d72.css",
+      "static/chunks/app/layout-249b07eb35a1ef79.js"
+    ],
+    "/loan-application/page": [
+      "static/chunks/webpack-121082f698a87174.js",
+      "static/chunks/fd9d1056-f37f35a3f4ea20d1.js",
+      "static/chunks/69-1bbdb4b3053977b3.js",
+      "static/chunks/main-app-51adad727d2499ae.js",
+      "static/chunks/bc9e92e6-bf3fe644e8a736f2.js",
+      "static/chunks/36546cfe-99ce74d20f54e220.js",
+      "static/chunks/398-7675f0715cafb35e.js",
+      "static/css/ab267f7f3ff887f1.css",
+      "static/chunks/app/loan-application/page-5dce0b6fae5de5b3.js"
+    ],
+    "/dashboard/page": [
+      "static/chunks/webpack-121082f698a87174.js",
+      "static/chunks/fd9d1056-f37f35a3f4ea20d1.js",
+      "static/chunks/69-1bbdb4b3053977b3.js",
+      "static/chunks/main-app-51adad727d2499ae.js",
+      "static/chunks/bc9e92e6-bf3fe644e8a736f2.js",
+      "static/chunks/36546cfe-99ce74d20f54e220.js",
+      "static/chunks/398-7675f0715cafb35e.js",
+      "static/css/125dfb96e6d2809b.css",
+      "static/chunks/app/dashboard/page-a8ea99b25cd4a9f5.js"
+    ],
+    "/page": [
+      "static/chunks/webpack-121082f698a87174.js",
+      "static/chunks/fd9d1056-f37f35a3f4ea20d1.js",
+      "static/chunks/69-1bbdb4b3053977b3.js",
+      "static/chunks/main-app-51adad727d2499ae.js",
+      "static/chunks/703-c5b120af33898650.js",
+      "static/chunks/324-6a332cf5ab941951.js",
+      "static/chunks/624-ea4d4cee07797a87.js",
+      "static/css/87cb186be7136a23.css",
+      "static/chunks/app/page-deea097f5dec5b33.js"
+    ],
+    "/applications/[appID]/page": [
+      "static/chunks/webpack-121082f698a87174.js",
+      "static/chunks/fd9d1056-f37f35a3f4ea20d1.js",
+      "static/chunks/69-1bbdb4b3053977b3.js",
+      "static/chunks/main-app-51adad727d2499ae.js",
+      "static/chunks/bc9e92e6-bf3fe644e8a736f2.js",
+      "static/chunks/36546cfe-99ce74d20f54e220.js",
+      "static/chunks/398-7675f0715cafb35e.js",
+      "static/chunks/app/applications/[appID]/page-7e374230f30e310a.js"
+    ],
+    "/loan-offer/page": [
+      "static/chunks/webpack-121082f698a87174.js",
+      "static/chunks/fd9d1056-f37f35a3f4ea20d1.js",
+      "static/chunks/69-1bbdb4b3053977b3.js",
+      "static/chunks/main-app-51adad727d2499ae.js",
+      "static/chunks/bc9e92e6-bf3fe644e8a736f2.js",
+      "static/chunks/36546cfe-99ce74d20f54e220.js",
+      "static/chunks/398-7675f0715cafb35e.js",
+      "static/css/52530856a5fecd75.css",
+      "static/chunks/app/loan-offer/page-55876d12fbc7b61c.js"
+    ],
+    "/eligibility/page": [
+      "static/chunks/webpack-121082f698a87174.js",
+      "static/chunks/fd9d1056-f37f35a3f4ea20d1.js",
+      "static/chunks/69-1bbdb4b3053977b3.js",
+      "static/chunks/main-app-51adad727d2499ae.js",
+      "static/chunks/591-0e28004a9f281690.js",
+      "static/chunks/595-4add5af48d13ffc2.js",
+      "static/css/7e6337d4af03f27e.css",
+      "static/chunks/app/eligibility/page-c59751c0c5a47cce.js"
+    ],
+    "/investor-eligibility/page": [
+      "static/chunks/webpack-121082f698a87174.js",
+      "static/chunks/fd9d1056-f37f35a3f4ea20d1.js",
+      "static/chunks/69-1bbdb4b3053977b3.js",
+      "static/chunks/main-app-51adad727d2499ae.js",
+      "static/chunks/591-0e28004a9f281690.js",
+      "static/css/11275129ca7e7d00.css",
+      "static/chunks/app/investor-eligibility/page-fd6c89ce245bba51.js"
+    ],
+    "/login/page": [
+      "static/chunks/webpack-121082f698a87174.js",
+      "static/chunks/fd9d1056-f37f35a3f4ea20d1.js",
+      "static/chunks/69-1bbdb4b3053977b3.js",
+      "static/chunks/main-app-51adad727d2499ae.js",
+      "static/chunks/bc9e92e6-bf3fe644e8a736f2.js",
+      "static/chunks/36546cfe-99ce74d20f54e220.js",
+      "static/chunks/398-7675f0715cafb35e.js",
+      "static/chunks/703-c5b120af33898650.js",
+      "static/css/750efdb4da8e760c.css",
+      "static/chunks/app/login/page-5d9b27c171a12ff0.js"
+    ]
+  }
+}

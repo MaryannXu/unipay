@@ -39,3 +39,6 @@ yarn-error.log*
 next-env.d.ts
 
 #firebaseConfig.js
+firebaseConfig.js
+#firebase service account
+unipayf24-firebase-adminsdk-htopk-7786ba0ef8.json

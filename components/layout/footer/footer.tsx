@@ -69,29 +69,19 @@ export default function Footer() {
                             Borderless Student Financing</p>
                     </div>
                     <small className='footer__contacts-subheading'>
-                        <a href='mailto:contact@lvng.io' className='footer__email'>
-                            unipay@gmail.com
+                        <a href='https://unipaylending.com ' className='footer__email'>
+                            unipaylending.com
                         </a>
                     </small>
                     <ul className='footer__socials-list'>
                         <li className='footer__socials-item'>
-                            <a href='https://discord.gg/65B4TFfmNB'>
-                                <Icon_socials icon='discord' />
+                            <a href='https://api.whatsapp.com/send/?phone=15625269592&text&type=phone_number&app_absent=0'>
+                                <Icon_socials icon='whatsapp' />
                             </a>
                         </li>
                         <li className='footer__socials-item'>
-                            <a href='https://medium.com/lvnghome'>
-                                <Icon_socials icon='medium' />
-                            </a>
-                        </li>
-                        <li className='footer__socials-item'>
-                            <a href='https://linkedin.com/company/lvng-io'>
+                            <a href='https://www.linkedin.com/company/unipaylending/about/'>
                                 <Icon_socials icon='linkedin' />
-                            </a>
-                        </li>
-                        <li className='footer__socials-item'>
-                            <a href='https://t.me/lvnghome'>
-                                <Icon_socials icon='telegram' />
                             </a>
                         </li>
                     </ul>

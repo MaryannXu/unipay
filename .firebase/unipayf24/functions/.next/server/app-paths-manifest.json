@@ -1,0 +1,13 @@
+{
+  "/_not-found": "app/_not-found.js",
+  "/loan-application/page": "app/loan-application/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/robots.txt/route": "app/robots.txt/route.js",
+  "/page": "app/page.js",
+  "/applications/[appID]/page": "app/applications/[appID]/page.js",
+  "/loan-offer/page": "app/loan-offer/page.js",
+  "/eligibility/page": "app/eligibility/page.js",
+  "/icon.png/route": "app/icon.png/route.js",
+  "/investor-eligibility/page": "app/investor-eligibility/page.js",
+  "/login/page": "app/login/page.js"
+}

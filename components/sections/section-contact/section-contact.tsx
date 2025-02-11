@@ -15,7 +15,7 @@ export default function SectionContact() {
                 </div>
                 <ul className='section-contact__links-list'>
                     <li className='section-contact__links-item'>
-                        <a href='' className='section-contact__link'>
+                        <a href='mailto:rmilliga@usc.edu' className='section-contact__link'>
                             <span className='section-contact__link-text'>EMAIL</span>
                             <span className='section-contact__link-icon'>
                                 <Icon_arrow direction='diagonal' />
@@ -23,15 +23,15 @@ export default function SectionContact() {
                         </a>
                     </li>
                     <li className='section-contact__links-item'>
-                        <a href='' className='section-contact__link'>
-                            <span className='section-contact__link-text'>Slack</span>
+                        <a href='https://api.whatsapp.com/send/?phone=15625269592&text&type=phone_number&app_absent=0' className='section-contact__link'>
+                            <span className='section-contact__link-text'>WhatsApp</span>
                             <span className='section-contact__link-icon'>
                                 <Icon_arrow direction='diagonal' />
                             </span>
                         </a>
                     </li>
                     <li className='section-contact__links-item'>
-                        <a href='https://www.linkedin.com' className='section-contact__link'>
+                        <a href='https://www.linkedin.com/company/unipaylending/about/' className='section-contact__link'>
                             <span className='section-contact__link-text'>LinkedIn</span>
                             <span className='section-contact__link-icon'>
                                 <Icon_arrow direction='diagonal' />
