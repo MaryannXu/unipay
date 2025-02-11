@@ -6,9 +6,15 @@
       "**/.*",
       "**/node_modules/**"
     ],
+    "rewrites": [{
+      "source": "/api/**",
+      "run":{
+        "serviceId": "flask-fire",
+        "region": "us-central1"
+      }
+    }],
     "frameworksBackend": {
       "region": "us-west1"
     }
   }
 }
-
