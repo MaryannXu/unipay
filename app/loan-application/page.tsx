@@ -155,16 +155,13 @@ export default function LoanApplicationPage() {
             };
 
             // CREATE a new doc in /users/<uid>/loanApplications
-            try {
-                const docRef = await addDoc(
-                    collection(db, "users", user.uid, "loanApplications"),
-                    applicationData
-                );
-                alert("Application data saved to Firestore!");
-                sendApplicationSubmitted(user.uid, docRef.id);
-            } catch (error) {
-                console.error("Firestore Write Error:", error);
-            }
+            const docRef = await addDoc(
+                collection(db, "users", user.uid, "loanApplications"),
+                applicationData
+                );   
+            
+         
+            sendApplicationSubmitted(user.uid, docRef.id);
             // Redirect to dashboard
             router.push("/loan-offer");
         } catch (error) {

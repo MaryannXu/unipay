@@ -11,7 +11,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from models.run_model import run_model
 
 app = Flask(__name__)
-CORS(app) 
+CORS(app, resources={r"/api/": {"origins":["http://localhost:3000", "https://flask-fire-611946450050.us-central1.run.app"]}}) 
 
 os.environ["LOKY_MAX_CPU_COUNT"] = "4"
 cred = credentials.Certificate("../unipayf24-firebase-adminsdk-htopk-7786ba0ef8.json")  
@@ -43,10 +43,21 @@ class LoanTerms:
     def create_loanTerms(self, user_id, app_id): 
       try: 
          doc_ref = db.collection("users").document(user_id).collection("loanApplications").document(app_id)
-         doc_ref.update({"loanTerms": self.to_dict()})
+         doc = doc_ref.get()
+
+         if doc.exists:
+            print("document exists. add loan terms")
+            existing_data = doc.to_dict()
+            existing_loan_terms = existing_data.get("loanTerms", {})
+            existing_loan_terms.update(self.to_dict())  # Merge without overwriting other fields
+            doc_ref.set({"loanTerms": existing_loan_terms}, merge=True)
+         else:
+            print("document does not exist")
+            doc_ref.set({"loanTerms": self.to_dict()}, merge=True)
   
       except Exception as e: 
          print("Error updating document", e)
+      return self.to_dict()
 
 
 def interest_rate(user_id, app_id):
@@ -68,9 +79,6 @@ def interest_rate(user_id, app_id):
           features = np.array(list(model_input.values()), dtype=np.float32).reshape(1, -1)
           prediction = model.predict(features)
           proba = round(float(prediction[0]), 2) 
-
-
-          doc_ref.update({"loanTerms.interestRate": proba})
 
           return proba
           
@@ -130,15 +138,16 @@ def application_submitted():
         status = "pending"
 
         #LoanTerms object and process the loan
-        obj = LoanTerms(
-            loanAmount, interestRate, termLength, repaymentSchedule, startDate, endDate, monthlyPayment, status
-        )
-        obj.create_loanTerms(user_id, app_id)
-
         calculated_interest_rate = interest_rate(user_id, app_id)
         print(calculated_interest_rate)
 
-        return jsonify({"message": "Loan application submitted successfully", "interest_rate": calculated_interest_rate})
+        obj = LoanTerms(
+            loanAmount, calculated_interest_rate, termLength, repaymentSchedule, startDate, endDate, monthlyPayment, status
+        )
+        newLoanTerms = obj.create_loanTerms(user_id, app_id)
+
+
+        return jsonify({"message": "Loan application submitted successfully", "interest_rate": calculated_interest_rate, "new terms":newLoanTerms})
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
