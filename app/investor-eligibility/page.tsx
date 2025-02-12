@@ -219,10 +219,9 @@ const InvestorEligibility: React.FC = () => {
                   Sorry, it looks like you are not eligible to invest right now.
                 </h1>
                 <p>
-                  You may still qualify in the future. Check out what we look
-                  for on our{" "}
-                    <a href="/" className="not-eligible-link">
-                    homepage
+                  You may still qualify in the future. Contact us for more details
+                    <a href="/#contact" className="not-eligible-link">
+                    {" "} here
                   </a>
                   .
                 </p>

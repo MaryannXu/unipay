@@ -352,8 +352,8 @@ const Eligibility = () => {
                   Just because we can't support you now, doesn't mean we can't in the future.{" "}
                 </p>
                 <p>
-                  Check out the kind of students we look for
-                  <Link className="not-eligible-link" href="/">
+                 Contact us for more info
+                  <Link className="not-eligible-link" href="/#contact">
                     {" "}
                       here.
                   </Link>
