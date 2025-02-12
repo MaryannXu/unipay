@@ -1,8 +1,8 @@
 import './menu.scss';
-import { useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { NavigationContext } from '../navigation/navigation';
 import { useLenis } from '@studio-freight/react-lenis';
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from 'next/navigation';
 
 type NavItemProps = {
     index: number;
@@ -12,9 +12,10 @@ type NavItemProps = {
 };
 
 const ITEMS = [
-    { name: 'Home', href: '#home', soon: false },
+    { name: 'Home', href: '/', soon: false },
     { name: 'About', href: '#whyus', soon: false },
     { name: 'FAQ', href: '#faq', soon: false },
+    { name: 'Contact', href: '#contact', soon: false },
     { name: 'Student Eligibility Form', href: '/eligibility', soon: false },
     { name: 'Investor Eligibility Form', href: '/investor-eligibility', soon: false },
 ];
@@ -23,18 +24,29 @@ function MenuNavItem({ index, name, href, soon }: NavItemProps) {
     const lenis = useLenis();
     const { setIsMenuOpened } = useContext(NavigationContext);
     const router = useRouter();
+    const pathname = usePathname();
 
     const handleClick = (event: React.MouseEvent) => {
         event.preventDefault();
         setIsMenuOpened(false);
 
         if (href === '/eligibility') {
-            // Navigate using the router for eligibility forms
             router.push('/eligibility');
-        } else if (href === '/investor-eligibility'){
+        } else if (href === '/investor-eligibility') {
             router.push('/investor-eligibility');
+        } else if (href.startsWith('#')) {
+            // If the current route is not the homepage, navigate to '/'
+            if (pathname !== '/') {
+                router.push('/'+href);
+            } else {
+                // Already on the homepage; scroll directly.
+                lenis.isStopped = false;
+                lenis.scrollTo(href, { offset: 100 });
+            }
+        } else if (href === '/') {
+            router.push('/');
         } else {
-            // Perform scrolling for other navigation items
+            // For any other href, perform scrolling directly.
             lenis.isStopped = false;
             lenis.scrollTo(href, { offset: 100 });
         }

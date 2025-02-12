@@ -205,12 +205,12 @@ const InvestorEligibility: React.FC = () => {
                 <h1 className="congrats-decision">
                   Congratulations! You are eligible to invest.
                 </h1>
-                <p>The next step is to create or log into your account.</p>
+                <p>Next step is to get in touch with us.</p>
                 <button
                     className="begin-button"
-                    onClick={() => router.push("/login?registering=true")}
+                    onClick={() => router.push("/#contact")}
                 >
-                  Go to Register
+                  Contact Us
                 </button>
               </span>
                         ) : (

@@ -5,7 +5,7 @@
   justify-content: center;
   text-align: center;
 
-  margin: 6rem auto; /* more vertical spacing for a professional look */
+  margin: 6rem auto;
   padding: 0 1rem;
 
 }
@@ -115,6 +115,10 @@ p {
   border: 1px solid var(--stripe-color);
   border-radius: 5px;
   font-size: 1rem;
+
+  .react-select__option {
+    color: black !important;
+  }
 }
 
 .date-picker {

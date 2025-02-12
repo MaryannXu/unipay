@@ -4,7 +4,7 @@ import Icon_arrow from '../../icons/icon-arrow';
 
 export default function SectionContact() {
     return (
-        <section className='section-contact'>
+        <section  id='contact' className='section-contact'>
             <div className='container section-contact__container'>
                 <div className='section-contact__banner-wrapper'>
                     <Image src={'/img/unipaygradient.png'} alt='contact' fill={true} sizes='100vw' />

@@ -88,20 +88,19 @@ const Eligibility = () => {
          * 5. homeCountry ∈ ["India", "China", "Korea"]
          */
         const validStatuses = [
-            "Applied, awaiting admission",
             "Accepted, yet to start",
             "Returning University Student",
         ];
-        const validSchools = ["Harvard University", "University of Southern California"];
-        const validDegrees = ["Bachelor's Degree", "Master's Degree", "Doctoral Degree"];
-        const validCountries = ["India", "China", "Korea"];
+        // const validSchools = ["Harvard University", "University of Southern California"];
+        // const validDegrees = ["Bachelor's Degree", "Master's Degree", "Doctoral Degree"];
+        // const validCountries = ["India", "China", "Korea"];
 
         const meetsCriteria =
-            validStatuses.includes(formData.currentStatus) &&
-            validSchools.includes(formData.school) &&
-            validDegrees.includes(formData.highestDegree) &&
-            Number(formData.gpa) >= 3.2 &&
-            validCountries.includes(formData.homeCountry);
+            validStatuses.includes(formData.currentStatus);
+            // validSchools.includes(formData.school) &&
+            // validDegrees.includes(formData.highestDegree) &&
+            // Number(formData.gpa) >= 3.2 &&
+            // validCountries.includes(formData.homeCountry);
 
         setIsEligible(meetsCriteria);
     };
@@ -128,7 +127,7 @@ const Eligibility = () => {
         return options;
     }
 
-    // ---- Make sure we're storing the correct property in formData ----
+    // storing the correct property in formData
     const [selectedOptionSchool, setSelectedOptionSchool] = useState<SingleValue<Option>>(null);
     const handleChangeSchool = (selected: SingleValue<Option>) => {
         setSelectedOptionSchool(selected);
@@ -205,6 +204,7 @@ const Eligibility = () => {
                         <h1>Select a School:</h1>
                         <Select
                             className="dropdown"
+                            classNamePrefix="react-select"
                             options={universities}
                             value={selectedOptionSchool}
                             onChange={handleChangeSchool}
@@ -252,6 +252,7 @@ const Eligibility = () => {
                         <label>What academic degree are you pursuing?</label>
                         <Select
                             className="dropdown"
+                            classNamePrefix="react-select"
                             options={degrees}
                             value={selectedOptionDegree}
                             onChange={handleChangeDegree}
@@ -272,6 +273,7 @@ const Eligibility = () => {
                         <label>What is your current GPA?</label>
                         <select
                             className="gpa-dropdown"
+
                             onChange={(e) => handleInputChange("gpa", e.target.value)}
                             value={formData.gpa}
                         >
@@ -299,6 +301,7 @@ const Eligibility = () => {
                         <h1>Select your Home Country</h1>
                         <Select
                             className="dropdown"
+                            classNamePrefix="react-select"
                             options={countries}
                             value={selectedOptionCountry}
                             onChange={handleChangeCountry}
