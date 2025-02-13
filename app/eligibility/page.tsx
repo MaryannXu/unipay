@@ -9,6 +9,10 @@ import { useWindowSize } from "react-use";
 import Link from "next/link";
 import Select, { SingleValue } from 'react-select';
 
+import { auth, db } from "@/firebaseConfig";
+import { doc, collection, addDoc } from "firebase/firestore";
+
+
 const universities = [
     { value: "", label: "Select" },
     { value: "Harvard University", label: "Harvard University" },
@@ -48,6 +52,9 @@ const Eligibility = () => {
     const [step, setStep] = useState(0);
 
     const [formData, setFormData] = useState({
+        firstName: "",
+        lastName: "",
+        email: "",
         currentStatus: "",
         school: "",
         customSchool: "",
@@ -147,18 +154,60 @@ const Eligibility = () => {
     };
     // ------------------------------------------------------------------
 
+    const saveUserInfo = async () => {
+        try {
+            // Add doc to Firestore (adjust the collection name to your preference)
+            await addDoc(collection(db, "interestedUsers"), {
+                firstName: formData.firstName,
+                lastName: formData.lastName,
+                email: formData.email,
+                timestamp: new Date(),
+            });
+            // After saving, go to next step
+            handleNext();
+        } catch (error) {
+            console.error("Error saving user info:", error);
+            // Handle error if needed
+        }
+    };
+
     return (
         <div className="eligibility-container">
             <div className="eligibility-section">
                 {step === 0 && (
                     <div>
-                        <h1 className="highlight">Eligibility Form</h1>
+                        <h1 className="highlight">Student Eligibility Form</h1>
                         <p>
-                            To start, fill out this quick eligibility form to check if UniPay is the right
-                            service for you.
+                            UniPay is looking forward to helping you. We're on this journey together! Start by filling out this quick eligibility form.
                         </p>
+                        {/* FIRST NAME */}
+                        <input
+                            type="text"
+                            placeholder="First Name"
+                            className="text-input"
+                            value={formData.firstName}
+                            onChange={(e) => handleInputChange("firstName", e.target.value)}
+                        />
+
+                        {/* LAST NAME */}
+                        <input
+                            type="text"
+                            placeholder="Last Name"
+                            className="text-input"
+                            value={formData.lastName}
+                            onChange={(e) => handleInputChange("lastName", e.target.value)}
+                        />
+
+                        {/* EMAIL */}
+                        <input
+                            type="email"
+                            placeholder="Email"
+                            className="text-input"
+                            value={formData.email}
+                            onChange={(e) => handleInputChange("email", e.target.value)}
+                        />
                         <div className="button-container">
-                            <button className="begin-button" onClick={handleNext}>
+                            <button className="begin-button" onClick={saveUserInfo}>
                                 Begin Form
                             </button>
                             <button className="first-back-button" onClick={() => router.push("/")}>
