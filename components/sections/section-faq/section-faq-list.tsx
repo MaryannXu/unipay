@@ -27,16 +27,16 @@ function SectionFaqItem({ heading, text }: ItemProps) {
 
 const LIST: ItemProps[] = [
     {
-        heading: 'Can UniPay provide a letter of financial support?',
-        text: 'Upon credit approval, UniPay is able to issue support letters to assist our applicants with the visa process at no cost. You will need to provide the Support Letter to your school in order to receive the I-20.',
+        heading: 'Can UniPay help me access financial support?',
+        text: 'Yes! Once approved, UniPay provides financial support tailored to the needs of our members.',
     },
     {
-        heading: 'What is the loan repayment process like?',
-        text: 'With UniPay, repayment begins after a grace period which includes the period of your study as well as a few additional months. Financing: 6 months from class end date. Refinancing: 6 months after graduating.',
+        heading: 'What are my options as an international student?',
+        text: 'Interest rates and loan terms depend on your financial background. Most lenders require a cosigner for international student loans, but UniPay offers options to help you navigate these challenges.',
     },
     {
-        heading: 'How do funds get disbursed?',
-        text: 'By partnering with your school, we disperse funds directly to your universities financial aid office. You\'ll receive confirmation of fund dispersal when completed.',
+        heading: 'How can I learn more about UniPay and financial resources?',
+        text: 'Explore our platform for in-depth resources on studying in the U.S., or connect with us on social media for tips, updates, and support.',
     },
 ];
 

@@ -40,10 +40,8 @@ export default function SectionInnovation() {
                         <div className='section-innovation__grid-description'>
                             <h3 className='section-innovation__description-heading'>Financial Support</h3>
                             <p className='section-innovation__description-text'>
-                                By supporting you financially we hope to make you feel you belong
-                                here. Being a member of UniPay we'll keep record of your
-                                financing history which can boost your U.S credit score for the
-                                long run.
+                                By supporting you we hope to make you feel you belong
+                                here. Being a member of UniPay we'll support you during your time in the U.S.
                             </p>
                         </div>
                     </li>
@@ -54,8 +52,8 @@ export default function SectionInnovation() {
                         <div className='section-innovation__grid-description'>
                             <h3 className='section-innovation__description-heading'>Community Driven</h3>
                             <p className='section-innovation__description-text'>
-                                We care about you. And so do others. That's why we brings on alumni
-                                and other supporters of your university to form a community driven
+                                We care about you. And so do others. That's why we bring on 
+                                supporters of your university to form a community driven
                                 lending system.
                             </p>
                         </div>

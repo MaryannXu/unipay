@@ -88,7 +88,7 @@ export default function SectionWhyus() {
                         </h3>
                         <p className='section-whyus__bullets-text'>
                             We want you succeed.
-                            To help, we build your credit score as you pay off loans.
+                            To help when it matters most, in a big or small way.
                         </p>
                     </div>
 

@@ -98,7 +98,7 @@ export default function Footer() {
                     <small className='footer__projects-subheading'>Products</small>
                     <ul className='footer__projects-list'>
                         <li onClick={() => lenis.scrollTo('#whyus', { offset: 100 })} className='footer__projects-item'>
-                            Student Loan Financing
+                            Financial Assistance
                         </li>
                         <li className='footer__projects-item soon'>Student Refinancing</li>
                         <li className='footer__projects-item soon'>Undergraduate Student Loans</li>
@@ -109,7 +109,7 @@ export default function Footer() {
                     {/* <a href='#' className='footer__policy'>
                         Legal regulations
                     </a> */}
-                    <small className='footer__copyright'>UniPay</small>
+                    <small className='footer__copyright'>UniPay LLC</small>
                 </div>
             </div>
         </footer>
