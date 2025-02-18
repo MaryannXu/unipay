@@ -9,6 +9,7 @@ import joblib
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from models.run_model import run_model
+from models.fico_model import calculate_fico_score
 
 app = Flask(__name__)
 CORS(app, resources={r"/api/": {"origins":["http://localhost:3000", "https://flask-fire-611946450050.us-central1.run.app"]}}) 
@@ -59,11 +60,51 @@ class LoanTerms:
          print("Error updating document", e)
       return self.to_dict()
 
+class Fico_Application:
+   def __init__(self, ficoScore, account_balance, credit_length, credit_limit, credit_line_status, credit_overdue, total_loans, total_credit_cards):
+        self.ficoScore = ficoScore
+        self.overduePayments = credit_overdue
+        self.sanctionedAmount = credit_limit
+        self.currentBalance = account_balance
+        self.creditHistoryLength = credit_length
+        self.creditLineStatus = credit_line_status
+        self.loanCount = total_loans
+        self.creditCount = total_credit_cards
+   def to_dict(self): 
+      return {
+            "ficoScore": self.ficoScore,
+            "overduePayments": self.overduePayments,
+            "sanctionedAmount": self.sanctionedAmount,
+            "currentBalance": self.currentBalance,
+            "creditHistoryLength": self.creditHistoryLength,
+            "creditLineStatus": self.creditLineStatus,
+            "loanCount": self.loanCount,
+            "creditCount": self.creditCount
+        }
+   def create_fico_score(self, user_id, app_id): 
+      try: 
+         
+         doc_ref = db.collection("users").document(user_id).collection("loanApplications").document(app_id)
+         doc = doc_ref.get()
+
+         if doc.exists:
+            print("document exists. add fico score")
+            existing_data = doc.to_dict()
+            existing_fico_score = existing_data.get("ficoScore", {})
+            existing_fico_score.update(self.to_dict())  # Merge without overwriting other fields
+            doc_ref.set({"loanTerms": existing_fico_score}, merge=True)
+         else:
+            print("document does not exist")
+            doc_ref.set({"ficoScore": self.to_dict()}, merge=True)
+      except Exception as e: 
+         print("Error updating document", e)
+      return self.to_dict()
 
 def interest_rate(user_id, app_id):
        try: 
           doc_ref = db.collection("users").document(user_id).collection("loanApplications").document(app_id)
-        
+          doc = doc_ref.get()
+
           model_input = {
             "income": 55000,  # Annual income in USD
             "employment_length": 3,  # Years employed
@@ -85,22 +126,6 @@ def interest_rate(user_id, app_id):
        except Exception as e: 
          print("Error updating document", e)
 
-def fetch_application(user_id: str, app_id: str):
-    try: 
-       doc_ref = db.collection("users").document(user_id).collection("loanApplications").document(app_id)
-       doc = doc_ref.get()
-       if doc.exists: 
-          return doc.to_dict()
-       else: 
-          return {"error": "Document not found"}
-    except Exception as e: 
-       return {"error": str(e)}
-       
-def elt():
-   
-    document = process_pdf() #output: extracted json 
-    transformed_document = load_document(schema_name, json_schema, document)#output: structured json
-    transformed_information(transformed_document)#output: upload to firebase
 
 @app.route("/api/application_submitted", methods=['POST'])
 def application_submitted(): 
@@ -149,6 +174,57 @@ def application_submitted():
 
         return jsonify({"message": "Loan application submitted successfully", "interest_rate": calculated_interest_rate, "new terms":newLoanTerms})
 
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route("/api/fico_score", methods=['POST'])
+def calculated_fico_score(): 
+    try: 
+        # extract the token from the request headers
+        auth_header = request.headers.get("Authorization")
+        if not auth_header or not auth_header.startswith("Bearer "):
+            return jsonify({"error": "Unauthorized, missing token"}), 401
+
+        id_token = auth_header.split("Bearer ")[-1]
+
+        # verify token
+        try:
+            decoded_token = auth.verify_id_token(id_token)
+            authenticated_user_id = decoded_token["uid"]
+        except Exception as e:
+            return jsonify({"error": "Invalid or expired token", "details": str(e)}), 403
+
+        data = request.get_json()
+        user_id = data.get("user_id")
+        app_id = data.get("app_id")
+
+        #authenticated user matches the request's user_id
+        if authenticated_user_id != user_id:
+            return jsonify({"error": "Unauthorized access"}), 403
+        
+        features = {
+                "fico_score": data.get("ficoScore", "N/A"),
+                "account_balance": data.get("accountBalance", "N/A"),
+                "credit_length": data.get("creditHistory", {}).get("creditLength", "N/A"),
+                "credit_limit": data.get("creditHistory", {}).get("creditLimit", "N/A"),
+                "credit_line_status": data.get("creditHistory", {}).get("creditLineStatus", "N/A"),
+                "credit_overdue": data.get("creditHistory", {}).get("creditOverdue", "N/A"),
+                "total_loans": data.get("creditHistory", {}).get("totalLoans", "N/A"),
+                "total_credit_cards": data.get("creditHistory", {}).get("totalCreditCards", "N/A"),
+                "weekly_spending": data.get("weeklySpending", "N/A"),
+            }
+        fico_score = calculated_fico_score(features)
+        obj = Fico_Application(features)
+        updated_fico_score = obj.create_fico_score(user_id, app_id)
+        return jsonify({"message": "fico score application submitted successfully", "fico score": fico_score})
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+
+
+        
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 

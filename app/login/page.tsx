@@ -188,9 +188,9 @@ const Login = () => {
             const additionalUserInfo = getAdditionalUserInfo(userCredential);
 
             if (additionalUserInfo?.isNewUser) {
-                router.push("/comingsoon");
+                router.push("/credit-score");
             } else {
-                router.push("/comingsoon");
+                router.push("/credit-score");
             }
         } catch (error: any) {
             setErrorMessage("Google Sign-In failed.");
@@ -207,7 +207,7 @@ const Login = () => {
 
         try {
             await signInWithEmailAndPassword(auth, email, password);
-            router.push("/comingsoon");
+            router.push("/credit-score");
         } catch (error: any) {
             setErrorMessage("Invalid username or password. Please try again.");
         }
@@ -223,7 +223,7 @@ const Login = () => {
 
         try {
             await createUserWithEmailAndPassword(auth, email, password);
-            router.push("/comingsoon");
+            router.push("/credit-score");
         } catch (error: any) {
             setErrorMessage("Registration failed. Please try again.");
         }
