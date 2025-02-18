@@ -2,11 +2,11 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { auth, db } from "@/firebaseConfig";
-import { doc, collection, addDoc } from "firebase/firestore";
+import { auth, db, storage } from "@/firebaseConfig";
+import { doc, collection, addDoc, setDoc } from "firebase/firestore";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import "@/styles/loan-application.scss";
 import { getAuth } from "firebase/auth";
-
 
 // Steps data (unchanged)
 const steps = [
@@ -20,6 +20,58 @@ const steps = [
 
 export default function LoanApplicationPage() {
     const router = useRouter();
+
+    //for firebase file upload storage
+    const [loanAppId, setLoanAppId] = useState("");
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((user) => {
+            if (user && !loanAppId) {
+                // Create a new doc reference to generate a unique ID.
+                const newDocRef = doc(collection(db, "users", user.uid, "loanApplications"));
+                setLoanAppId(newDocRef.id);
+            } else if (!user) {
+                router.push("/login");
+            }
+        });
+        return () => unsubscribe();
+    }, [loanAppId, router]);
+
+    const [uploadedFiles, setUploadedFiles] = useState<{ [key: string]: string }>({});
+    const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>, fieldName: string) => {
+        if (!event.target.files || event.target.files.length === 0) return;
+
+        const file = event.target.files[0]; // Get the first selected file
+        const user = auth.currentUser;
+
+        if (!user) {
+            alert("You must be logged in to upload files.");
+            return;
+        }
+
+        const storageRef = ref(
+            storage,
+            `users/${user.uid}/loanApplications/${loanAppId}/${fieldName}/${file.name}`
+        );
+
+        try {
+            // Upload the file to Firebase Storage
+            await uploadBytes(storageRef, file);
+
+            // Get the URL of the uploaded file
+            const fileURL = await getDownloadURL(storageRef);
+
+            // Save file URL in state
+            setUploadedFiles((prev) => ({
+                ...prev,
+                [fieldName]: fileURL,
+            }));
+
+            console.log(`File uploaded successfully: ${fileURL}`);
+        } catch (error) {
+            console.error("Error uploading file:", error);
+            alert("Error uploading file. Please try again.");
+        }
+    };
 
     const [loading, setLoading] = useState(true);
     const [activeStep, setActiveStep] = useState(0);
@@ -152,16 +204,16 @@ export default function LoanApplicationPage() {
                 step4isReceivingScholarship,
                 // metadata
                 createdAt: new Date().toISOString(),
+                uploadedFiles,
             };
 
-            // CREATE a new doc in /users/<uid>/loanApplications
-            const docRef = await addDoc(
-                collection(db, "users", user.uid, "loanApplications"),
+            // SAVE the document using the pre-generated loanAppId
+            await setDoc(
+                doc(db, "users", user.uid, "loanApplications", loanAppId),
                 applicationData
-                );   
-            
-         
-            sendApplicationSubmitted(user.uid, docRef.id);
+            );
+
+            sendApplicationSubmitted(user.uid, loanAppId);
             // Redirect to dashboard
             router.push("/loan-offer");
         } catch (error) {
@@ -343,13 +395,13 @@ export default function LoanApplicationPage() {
                                 safeguarding your data.
                             </p>
 
-                            <hr />
+                            <hr/>
 
                             <h3>Academic Funding</h3>
                             <label>
                                 Provide the total academic funding you are looking to receive
                                 from this loan
-                                <br />
+                                <br/>
                                 <input
                                     type="number"
                                     placeholder="$"
@@ -360,7 +412,7 @@ export default function LoanApplicationPage() {
 
                             <label>
                                 What will these funds be allocated towards?
-                                <br />
+                                <br/>
                                 <select
                                     value={step1fundsAllocation}
                                     onChange={(e) => setFundsAllocation(e.target.value)}
@@ -379,7 +431,7 @@ export default function LoanApplicationPage() {
                             <label>
                                 How much funding will you receive outside of this loan to
                                 support your study abroad?
-                                <br />
+                                <br/>
                                 <input
                                     type="number"
                                     placeholder="$"
@@ -390,7 +442,7 @@ export default function LoanApplicationPage() {
 
                             <label>
                                 Are you currently employed?
-                                <br />
+                                <br/>
                                 <select
                                     value={step1isEmployed}
                                     onChange={(e) => setIsEmployed(e.target.value)}
@@ -403,7 +455,7 @@ export default function LoanApplicationPage() {
                                 </select>
                             </label>
 
-                            <hr />
+                            <hr/>
 
                             <h3>Financial Verification Documents</h3>
                             <p>
@@ -418,9 +470,19 @@ export default function LoanApplicationPage() {
                             </p>
                             <div className="upload-container">
                                 <label>
-                                    <input type="file" multiple accept=".pdf,.jpg,.png" />
+                                    <input
+                                        type="file"
+                                        accept=".pdf,.jpg,.png"
+                                        onChange={(e) => handleFileUpload(e, "proofOfEmployment")}
+                                    />
                                     <span>Upload files: .pdf, .jpg, .png</span>
                                 </label>
+                                {uploadedFiles["proofOfEmployment"] && (
+                                    <p>
+                                        File uploaded: <a href={uploadedFiles["proofOfEmployment"]} target="_blank"
+                                                          rel="noopener noreferrer">View File</a>
+                                    </p>
+                                )}
                             </div>
 
                             <p>
@@ -443,9 +505,19 @@ export default function LoanApplicationPage() {
                             </p>
                             <div className="upload-container">
                                 <label>
-                                    <input type="file" multiple accept=".pdf,.jpg,.png" />
+                                    <input
+                                        type="file"
+                                        accept=".pdf,.jpg,.png"
+                                        onChange={(e) => handleFileUpload(e, "proofOfFunds")}
+                                    />
                                     <span>Upload files: .pdf, .jpg, .png</span>
                                 </label>
+                                {uploadedFiles["proofOfFunds"] && (
+                                    <p>
+                                        File uploaded: <a href={uploadedFiles["proofOfFunds"]} target="_blank"
+                                                          rel="noopener noreferrer">View File</a>
+                                    </p>
+                                )}
                             </div>
                         </div>
                     )}
@@ -462,12 +534,12 @@ export default function LoanApplicationPage() {
                             <h3>Visa Information</h3>
                             <label>
                                 What is the current status of your Visa?
-                                <br />
+                                <br/>
                                 <select
                                     value={step2visaStatus}
                                     onChange={(e) => setVisaStatus(e.target.value)}
                                 >
-                                    <option value="" disabled hidden>
+                                <option value="" disabled hidden>
                                         Select your Visa status
                                     </option>
                                     <option value="approved">Approved</option>
@@ -540,14 +612,24 @@ export default function LoanApplicationPage() {
                             <p>Provide a picture or PDF of your visa</p>
                             <div className="upload-container">
                                 <label>
-                                    <input type="file" multiple accept=".pdf,.jpg,.png" />
+                                    <input
+                                        type="file"
+                                        accept=".pdf,.jpg,.png"
+                                        onChange={(e) => handleFileUpload(e, "proofOfVisa")}
+                                    />
                                     <span>Upload files: .pdf, .jpg, .png</span>
                                 </label>
+                                {uploadedFiles["proofOfVisa"] && (
+                                    <p>
+                                        File uploaded: <a href={uploadedFiles["proofOfVisa"]} target="_blank"
+                                                          rel="noopener noreferrer">View File</a>
+                                    </p>
+                                )}
                             </div>
 
                             <label>
                                 SEVIS ID
-                                <br />
+                                <br/>
                                 <input
                                     type="text"
                                     placeholder="Enter SEVIS ID found on your I-20 or DS-2019 form"
@@ -582,7 +664,7 @@ export default function LoanApplicationPage() {
 
                                     <label>
                                         University name
-                                        <br />
+                                        <br/>
                                         <input
                                             type="text"
                                             placeholder="e.g. University of Example"
@@ -595,7 +677,7 @@ export default function LoanApplicationPage() {
 
                                     <label>
                                         Degree type
-                                        <br />
+                                        <br/>
                                         <input
                                             type="text"
                                             placeholder="e.g. Bachelor's, Master's"
@@ -608,7 +690,7 @@ export default function LoanApplicationPage() {
 
                                     <label>
                                         Major/Field of study
-                                        <br />
+                                        <br/>
                                         <input
                                             type="text"
                                             placeholder="e.g. Computer Science"
@@ -621,7 +703,7 @@ export default function LoanApplicationPage() {
 
                                     <label>
                                         GPA
-                                        <br />
+                                        <br/>
                                         <select
                                             value={edu.gpa}
                                             onChange={(e) =>
@@ -640,16 +722,34 @@ export default function LoanApplicationPage() {
 
                                     <h4>Proof of Attendance</h4>
                                     <p>
-                                        Provide a university transcript covering the entirety of your studies at this particular
+                                        Provide a university transcript covering the entirety of your studies at this
+                                        particular
                                         university
                                     </p>
                                     <div className="upload-container">
                                         <label>
-                                            <input type="file" multiple accept=".pdf,.jpg,.png" />
+                                            <input
+                                                type="file"
+                                                accept=".pdf,.jpg,.png"
+                                                onChange={(e) =>
+                                                    handleFileUpload(e, `proofOfPriorEdu_${index}`)
+                                                }
+                                            />
                                             <span>Upload files: .pdf, .jpg, .png</span>
                                         </label>
+                                        {uploadedFiles[`proofOfPriorEdu_${index}`] && (
+                                            <p>
+                                                File uploaded:{" "}
+                                                <a
+                                                    href={uploadedFiles[`proofOfPriorEdu_${index}`]}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                >
+                                                    View File
+                                                </a>
+                                            </p>
+                                        )}
                                     </div>
-
                                     <h4>Diploma/Certificate of Completion</h4>
                                     <p>
                                         If degree was completed, provide an official university document stating degree
@@ -657,9 +757,27 @@ export default function LoanApplicationPage() {
                                     </p>
                                     <div className="upload-container">
                                         <label>
-                                            <input type="file" multiple accept=".pdf,.jpg,.png" />
+                                            <input
+                                                type="file"
+                                                accept=".pdf,.jpg,.png"
+                                                onChange={(e) =>
+                                                    handleFileUpload(e, `proofOfPriorDegree_${index}`)
+                                                }
+                                            />
                                             <span>Upload files: .pdf, .jpg, .png</span>
                                         </label>
+                                        {uploadedFiles[`proofOfPriorDegree_${index}`] && (
+                                            <p>
+                                                File uploaded:{" "}
+                                                <a
+                                                    href={uploadedFiles[`proofOfPriorDegree_${index}`]}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                >
+                                                    View File
+                                                </a>
+                                            </p>
+                                        )}
                                     </div>
                                 </div>
                             ))}
@@ -687,7 +805,7 @@ export default function LoanApplicationPage() {
                             <div className="academic-history-card">
                                 <label>
                                     University name
-                                    <br />
+                                    <br/>
                                     <input
                                         type="text"
                                         placeholder="e.g. University of Example"
@@ -698,7 +816,7 @@ export default function LoanApplicationPage() {
 
                                 <label>
                                     Are you currently attending this university?
-                                    <br />
+                                    <br/>
                                     <select
                                         value={step4isCurrentlyAttending}
                                         onChange={(e) => setIsCurrentlyAttending(e.target.value)}
@@ -713,7 +831,7 @@ export default function LoanApplicationPage() {
 
                                 <label>
                                     Expected graduation date
-                                    <br />
+                                    <br/>
                                     <input
                                         type="date"
                                         value={step4expectedGraduationDate}
@@ -723,7 +841,7 @@ export default function LoanApplicationPage() {
 
                                 <label>
                                     Start date
-                                    <br />
+                                    <br/>
                                     <input
                                         type="date"
                                         value={step4startDate}
@@ -733,7 +851,7 @@ export default function LoanApplicationPage() {
 
                                 <label>
                                     Degree type
-                                    <br />
+                                    <br/>
                                     <input
                                         type="text"
                                         placeholder="e.g. Bachelor's, Master's"
@@ -744,7 +862,7 @@ export default function LoanApplicationPage() {
 
                                 <label>
                                     Major/Field of study
-                                    <br />
+                                    <br/>
                                     <input
                                         type="text"
                                         placeholder="e.g. Computer Science"
@@ -755,7 +873,7 @@ export default function LoanApplicationPage() {
 
                                 <label>
                                     GPA
-                                    <br />
+                                    <br/>
                                     <select
                                         value={step4gpaCurrent}
                                         onChange={(e) => setGpaCurrent(e.target.value)}
@@ -772,39 +890,63 @@ export default function LoanApplicationPage() {
 
                                 <h4>Proof of Attendance</h4>
                                 <p>
-                                    If currently attending, provide a university transcript covering the entirety of your studies at
+                                    If currently attending, provide a university transcript covering the entirety of
+                                    your studies at
                                     this particular university
                                 </p>
                                 <div className="upload-container">
                                     <label>
-                                        <input type="file" multiple accept=".pdf,.jpg,.png" />
+                                        <input
+                                            type="file"
+                                            accept=".pdf,.jpg,.png"
+                                            onChange={(e) => handleFileUpload(e, "proofOfCurrentDegree")}
+                                        />
                                         <span>Upload files: .pdf, .jpg, .png</span>
                                     </label>
+                                    {uploadedFiles["proofOfCurrentDegree"] && (
+                                        <p>
+                                            File uploaded: <a href={uploadedFiles["proofOfCurrentDegree"]}
+                                                              target="_blank"
+                                                              rel="noopener noreferrer">View File</a>
+                                        </p>
+                                    )}
                                 </div>
-
                                 <h4>Proof of Admission</h4>
                                 <p>
-                                    If you are soon to attend this university, provide a letter of admissions provided by the school.
+                                    If you are soon to attend this university, provide a letter of admissions provided
+                                    by the school.
                                 </p>
                                 <div className="upload-container">
                                     <label>
-                                        <input type="file" multiple accept=".pdf,.jpg,.png" />
+                                        <input
+                                            type="file"
+                                            accept=".pdf,.jpg,.png"
+                                            onChange={(e) => handleFileUpload(e, "proofOfCurrentAdmission")}
+                                        />
                                         <span>Upload files: .pdf, .jpg, .png</span>
                                     </label>
+                                    {uploadedFiles["proofOfCurrentAdmission"] && (
+                                        <p>
+                                            File uploaded: <a href={uploadedFiles["proofOfCurrentAdmission"]}
+                                                              target="_blank"
+                                                              rel="noopener noreferrer">View File</a>
+                                        </p>
+                                    )}
                                 </div>
                             </div>
 
-                            <hr className="section-divider" />
+                            <hr className="section-divider"/>
 
                             <h2>How are we going to help you</h2>
                             <p>
-                                We’re here to support you! Provide us with information that will help us uplift your educational journey.
+                                We’re here to support you! Provide us with information that will help us uplift your
+                                educational journey.
                             </p>
 
                             <h3>University Billing</h3>
                             <label>
                                 Estimated Cost of Attendance
-                                <br />
+                                <br/>
                                 <input
                                     type="number"
                                     placeholder="What is the expected cost of attendance including housing?"
@@ -815,7 +957,7 @@ export default function LoanApplicationPage() {
 
                             <label>
                                 Are you receiving financial assistance from the university in the form of scholarship?
-                                <br />
+                                <br/>
                                 <select
                                     value={step4isReceivingScholarship}
                                     onChange={(e) => setIsReceivingScholarship(e.target.value)}
@@ -838,18 +980,40 @@ export default function LoanApplicationPage() {
                             </p>
                             <div className="upload-container">
                                 <label>
-                                    <input type="file" multiple accept=".pdf,.jpg,.png" />
+                                    <input
+                                        type="file"
+                                        accept=".pdf,.jpg,.png"
+                                        onChange={(e) => handleFileUpload(e, "proofOfScholarship")}
+                                    />
                                     <span>Upload files: .pdf, .jpg, .png</span>
                                 </label>
+                                {uploadedFiles["proofOfScholarship"] && (
+                                    <p>
+                                        File uploaded: <a href={uploadedFiles["proofOfScholarship"]}
+                                                          target="_blank"
+                                                          rel="noopener noreferrer">View File</a>
+                                    </p>
+                                )}
                             </div>
 
                             <h4>Proof of Cost of Attendance</h4>
                             <p>Provide a university billing statement containing the total owed.</p>
                             <div className="upload-container">
                                 <label>
-                                    <input type="file" multiple accept=".pdf,.jpg,.png" />
+                                    <input
+                                        type="file"
+                                        accept=".pdf,.jpg,.png"
+                                        onChange={(e) => handleFileUpload(e, "proofOfEstCostUni")}
+                                    />
                                     <span>Upload files: .pdf, .jpg, .png</span>
                                 </label>
+                                {uploadedFiles["proofOfEstCostUni"] && (
+                                    <p>
+                                        File uploaded: <a href={uploadedFiles["proofOfEstCostUni"]}
+                                                          target="_blank"
+                                                          rel="noopener noreferrer">View File</a>
+                                    </p>
+                                )}
                             </div>
                         </div>
                     )}
@@ -874,7 +1038,7 @@ export default function LoanApplicationPage() {
                         </button>
                         {activeStep < steps.length - 1 ? (
                             <button type="button" className="next-button" onClick={nextStep}>
-                                Next
+                            Next
                             </button>
                         ) : (
                             <button type="button" className="submit-button" onClick={handleSubmitApplication}>
