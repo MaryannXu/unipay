@@ -1,0 +1,83 @@
+[debug] [2025-02-18T21:50:36.971Z] ----------------------------------------------------------------------
+[debug] [2025-02-18T21:50:36.974Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\rmill\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy --only hosting
+[debug] [2025-02-18T21:50:36.974Z] CLI Version:   13.29.2
+[debug] [2025-02-18T21:50:36.974Z] Platform:      win32
+[debug] [2025-02-18T21:50:36.974Z] Node Version:  v20.15.0
+[debug] [2025-02-18T21:50:36.974Z] Time:          Tue Feb 18 2025 13:50:36 GMT-0800 (Pacific Standard Time)
+[debug] [2025-02-18T21:50:36.974Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-02-18T21:50:36.978Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2025-02-18T21:50:37.214Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-02-18T21:50:37.214Z] > authorizing via signed-in user (rmilliga@usc.edu)
+[debug] [2025-02-18T21:50:37.215Z] [iam] checking project unipayf24 for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2025-02-18T21:50:37.215Z] Checked if tokens are valid: false, expires at: 1739509221003
+[debug] [2025-02-18T21:50:37.216Z] Checked if tokens are valid: false, expires at: 1739509221003
+[debug] [2025-02-18T21:50:37.216Z] > refreshing access token with scopes: []
+[debug] [2025-02-18T21:50:37.216Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-02-18T21:50:37.217Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-02-18T21:50:37.326Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-02-18T21:50:37.327Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-02-18T21:50:37.334Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/unipayf24:testIamPermissions [none]
+[debug] [2025-02-18T21:50:37.334Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/unipayf24:testIamPermissions x-goog-quota-user=projects/unipayf24
+[debug] [2025-02-18T21:50:37.334Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/unipayf24:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2025-02-18T21:50:37.340Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2025-02-18T21:50:37.340Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[debug] [2025-02-18T21:50:37.591Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/unipayf24:testIamPermissions 200
+[debug] [2025-02-18T21:50:37.591Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/unipayf24:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2025-02-18T21:50:37.592Z] Checked if tokens are valid: true, expires at: 1739919036327
+[debug] [2025-02-18T21:50:37.592Z] Checked if tokens are valid: true, expires at: 1739919036327
+[debug] [2025-02-18T21:50:37.593Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/unipayf24 [none]
+[debug] [2025-02-18T21:50:37.988Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/unipayf24 200
+[debug] [2025-02-18T21:50:37.989Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/unipayf24 {"projectId":"unipayf24","projectNumber":"611946450050","displayName":"unipay","name":"projects/unipayf24","resources":{"hostingSite":"unipayf24","realtimeDatabaseInstance":"unipayf24-default-rtdb"},"state":"ACTIVE","etag":"1_b9495fa7-8905-45ed-945f-d42561746d95"}
+[debug] [2025-02-18T21:50:40.543Z] Checked if tokens are valid: true, expires at: 1739919036327
+[debug] [2025-02-18T21:50:40.543Z] Checked if tokens are valid: true, expires at: 1739919036327
+[debug] [2025-02-18T21:50:40.543Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/unipayf24/sites pageToken=&pageSize=10
+[debug] [2025-02-18T21:50:41.751Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/unipayf24/sites 200
+[debug] [2025-02-18T21:50:41.751Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/unipayf24/sites {"sites":[{"name":"projects/unipayf24/sites/unipayf24","defaultUrl":"https://unipayf24.web.app","appId":"1:611946450050:web:39b94fae0051e7bf3cb89b","type":"DEFAULT_SITE"}]}
+[debug] [2025-02-18T21:50:41.752Z] Checked if tokens are valid: true, expires at: 1739919036327
+[debug] [2025-02-18T21:50:41.752Z] Checked if tokens are valid: true, expires at: 1739919036327
+[debug] [2025-02-18T21:50:41.753Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/-/webApps/1:611946450050:web:39b94fae0051e7bf3cb89b/config [none]
+[debug] [2025-02-18T21:50:42.023Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/-/webApps/1:611946450050:web:39b94fae0051e7bf3cb89b/config 200
+[debug] [2025-02-18T21:50:42.024Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/-/webApps/1:611946450050:web:39b94fae0051e7bf3cb89b/config {"projectId":"unipayf24","appId":"1:611946450050:web:39b94fae0051e7bf3cb89b","databaseURL":"https://unipayf24-default-rtdb.firebaseio.com","storageBucket":"unipayf24.firebasestorage.app","apiKey":"AIzaSyDOtb6YCz277ulMA94ehs_yM3mDDT5lnF4","authDomain":"unipayf24.firebaseapp.com","messagingSenderId":"611946450050","measurementId":"G-XW6S94C7H8"}
+[info] 
+   Thank you for trying our early preview of Next.js support on Firebase Hosting.
+   During the preview, support is best-effort and breaking changes can be expected. Proceed with caution.
+
+   Documentation: https://firebase.google.com/docs/hosting/frameworks/nextjs
+   File a bug: https://github.com/firebase/firebase-tools/issues/new?template=bug_report.md
+   Submit a feature request: https://github.com/firebase/firebase-tools/issues/new?template=feature_request.md
+
+   We'd love to learn from you. Express your interest in helping us shape the future of Firebase Hosting: https://goo.gle/41enW5X
+
+[debug] [2025-02-18T21:50:46.573Z] Checked if tokens are valid: true, expires at: 1739919036327
+[debug] [2025-02-18T21:50:46.573Z] Checked if tokens are valid: true, expires at: 1739919036327
+[debug] [2025-02-18T21:50:46.573Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/unipayf24/sites/unipayf24 [none]
+[debug] [2025-02-18T21:50:46.895Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/unipayf24/sites/unipayf24 200
+[debug] [2025-02-18T21:50:46.895Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/unipayf24/sites/unipayf24 {"name":"projects/unipayf24/sites/unipayf24","defaultUrl":"https://unipayf24.web.app","appId":"1:611946450050:web:39b94fae0051e7bf3cb89b","type":"DEFAULT_SITE"}
+[info]    ▲ Next.js 14.1.0
+
+[info] 
+
+[info]    Creating an optimized production build ...
+
+[info]  ✓ Compiled successfully
+
+[info]    Linting and checking validity of types ...
+
+[info] Failed to compile.
+
+
+[info] ./app/credit-score/page.tsx:408:43
+Type error: 'score' is possibly 'null'.
+
+  406 |                             const score = ficoScore;
+  407 |                             const maxScore = 850;
+> 408 |                             const ratio = score / maxScore;      // ~0.88
+      |                                           ^
+  409 |                             // At ratio=0 => degrees=90°, ratio=1 => degrees=270°
+  410 |                             const degrees = 90 + 180 * ratio;
+  411 |
+
+[debug] [2025-02-18T21:51:08.176Z] Error: ENOENT: no such file or directory, open 'C:\Users\rmill\Documents\unipay02\unipay\.next\export-marker.json'
+[error] 
+[error] Error: An unexpected error has occurred.

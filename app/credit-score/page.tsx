@@ -403,8 +403,8 @@ const CreditScore = () => {
                 {step === 5 && (
                     <div className="final-credit-score-container">
                         {(() => {
-                            const score = ficoScore;
                             const maxScore = 850;
+                            const score = ficoScore ?? 0;
                             const ratio = score / maxScore;      // ~0.88
                             // At ratio=0 => degrees=90°, ratio=1 => degrees=270°
                             const degrees = 90 + 180 * ratio;
