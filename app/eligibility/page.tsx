@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -7,11 +6,10 @@ import "@/styles/eligibility.scss";
 import Confetti from "react-confetti";
 import { useWindowSize } from "react-use";
 import Link from "next/link";
-import Select, { SingleValue } from 'react-select';
+import Select, { SingleValue } from "react-select";
 
 import { auth, db } from "@/firebaseConfig";
-import { doc, collection, addDoc } from "firebase/firestore";
-
+import { collection, addDoc } from "firebase/firestore";
 
 const universities = [
     { value: "", label: "Select" },
@@ -48,7 +46,7 @@ type Option = {
 
 const Eligibility = () => {
     const router = useRouter();
-    const { width, height } = useWindowSize(); // get current window dimensions for confetti
+    const { width, height } = useWindowSize();
     const [step, setStep] = useState(0);
 
     const [formData, setFormData] = useState({
@@ -71,49 +69,57 @@ const Eligibility = () => {
     const [isEligible, setIsEligible] = useState<boolean | null>(null);
     const [showConfetti, setShowConfetti] = useState(false);
 
-    const handleNext = () => {
-        if (step === 4) {
+    // Function to save ordered user data into Firestore
+    const saveOrderedUserData = async () => {
+        try {
+            // Create an ordered array of responses.
+            const orderedResponses = [
+                {First_Name: formData.firstName },
+                {Last_Name: formData.lastName },
+                {Email: formData.email },
+                {Current_Status: formData.currentStatus },
+                {School: formData.school || formData.customSchool },
+                {Graduation_Date: formData.graduationDate },
+                {Highest_Degree: formData.highestDegree },
+                {GPA: formData.gpa },
+                {Home_Country: formData.homeCountry || formData.customCountry },
+            ];
+
+            // Save the ordered array in your document
+            await addDoc(collection(db, "interestedUsers"), {
+                responses: orderedResponses,
+                timestamp: new Date(),
+            });
+
+            // Optionally, evaluate eligibility and move to the next step
             evaluateEligibility();
+            setStep((prev) => prev + 1);
+        } catch (error) {
+            console.error("Error saving user info:", error);
         }
-        setStep(step + 1);
     };
 
-    const handleBack = () => setStep(step - 1);
+    // For all steps except the final one we simply move to the next step.
+    const handleNext = () => {
+        if (step !== 4) {
+            setStep((prev) => prev + 1);
+        }
+    };
+
+    const handleBack = () => setStep((prev) => prev - 1);
 
     const handleInputChange = (key: string, value: string) => {
         setFormData({ ...formData, [key]: value });
     };
 
-    // ---- Update this function to check your criteria and set isEligible ----
+    // ---- Eligibility criteria (update as needed) ----
     const evaluateEligibility = () => {
-        /**
-         * Criteria to be eligible:
-         * 1. currentStatus ∈ ["Applied, awaiting admission", "Accepted, yet to start", "Returning University Student"]
-         * 2. school ∈ ["Harvard University", "University of Southern California"]
-         * 3. highestDegree ∈ ["Bachelor's Degree", "Master's Degree", "Doctoral Degree"]
-         * 4. gpa >= 3.2
-         * 5. homeCountry ∈ ["India", "China", "Korea"]
-         */
-        const validStatuses = [
-            "Accepted, yet to start",
-            "Returning University Student",
-        ];
-        // const validSchools = ["Harvard University", "University of Southern California"];
-        // const validDegrees = ["Bachelor's Degree", "Master's Degree", "Doctoral Degree"];
-        // const validCountries = ["India", "China", "Korea"];
-
-        const meetsCriteria =
-            validStatuses.includes(formData.currentStatus);
-            // validSchools.includes(formData.school) &&
-            // validDegrees.includes(formData.highestDegree) &&
-            // Number(formData.gpa) >= 3.2 &&
-            // validCountries.includes(formData.homeCountry);
-
+        const validStatuses = ["Accepted, yet to start", "Returning University Student"];
+        const meetsCriteria = validStatuses.includes(formData.currentStatus);
         setIsEligible(meetsCriteria);
     };
-    // -----------------------------------------------------------------------
+    // --------------------------------------------------
 
-    // Show confetti for ~4.2 seconds if eligible
     useEffect(() => {
         if (step === 5 && isEligible) {
             setShowConfetti(true);
@@ -134,7 +140,7 @@ const Eligibility = () => {
         return options;
     }
 
-    // storing the correct property in formData
+    // React-select states and handlers:
     const [selectedOptionSchool, setSelectedOptionSchool] = useState<SingleValue<Option>>(null);
     const handleChangeSchool = (selected: SingleValue<Option>) => {
         setSelectedOptionSchool(selected);
@@ -151,24 +157,6 @@ const Eligibility = () => {
     const handleChangeCountry = (selected: SingleValue<Option>) => {
         setSelectedOptionCountry(selected);
         handleInputChange("homeCountry", selected?.value || "");
-    };
-    // ------------------------------------------------------------------
-
-    const saveUserInfo = async () => {
-        try {
-            // Add doc to Firestore (adjust the collection name to your preference)
-            await addDoc(collection(db, "interestedUsers"), {
-                firstName: formData.firstName,
-                lastName: formData.lastName,
-                email: formData.email,
-                timestamp: new Date(),
-            });
-            // After saving, go to next step
-            handleNext();
-        } catch (error) {
-            console.error("Error saving user info:", error);
-            // Handle error if needed
-        }
     };
 
     return (
@@ -188,7 +176,6 @@ const Eligibility = () => {
                             value={formData.firstName}
                             onChange={(e) => handleInputChange("firstName", e.target.value)}
                         />
-
                         {/* LAST NAME */}
                         <input
                             type="text"
@@ -197,7 +184,6 @@ const Eligibility = () => {
                             value={formData.lastName}
                             onChange={(e) => handleInputChange("lastName", e.target.value)}
                         />
-
                         {/* EMAIL */}
                         <input
                             type="email"
@@ -207,7 +193,8 @@ const Eligibility = () => {
                             onChange={(e) => handleInputChange("email", e.target.value)}
                         />
                         <div className="button-container">
-                            <button className="begin-button" onClick={saveUserInfo}>
+                            {/* Simply move to the next step without saving partial data */}
+                            <button className="begin-button" onClick={handleNext}>
                                 Begin Form
                             </button>
                             <button className="first-back-button" onClick={() => router.push("/")}>
@@ -322,7 +309,6 @@ const Eligibility = () => {
                         <label>What is your current GPA?</label>
                         <select
                             className="gpa-dropdown"
-
                             onChange={(e) => handleInputChange("gpa", e.target.value)}
                             value={formData.gpa}
                         >
@@ -368,7 +354,8 @@ const Eligibility = () => {
                             <button className="back-button" onClick={handleBack}>
                                 Go Back
                             </button>
-                            <button className="next-button" onClick={handleNext}>
+                            {/* On Finish, save all answers (including name, email, etc.) to "interestedUsers" */}
+                            <button className="next-button" onClick={saveOrderedUserData}>
                                 Finish
                             </button>
                         </div>
@@ -398,10 +385,10 @@ const Eligibility = () => {
                   Sorry, it looks like you are not eligible for UniPay right now.
                 </h1>
                 <p className="checkout">
-                  Just because we can't support you now, doesn't mean we can't in the future.{" "}
+                  Just because we can't support you now, doesn't mean we can't in the future.
                 </p>
                 <p>
-                 Contact us for more info
+                  Contact us for more info
                   <Link className="not-eligible-link" href="/#contact">
                     {" "}
                       here.
