@@ -57,6 +57,11 @@ def calculate_fico_score(data):
     elif data["credit_line_status"] == "both":
         credit_lines = data["total_credit_cards"] + data["total_loans"]
         credit_mix = 2
+    else:
+        # Handle unexpected credit_line_status values
+        # This ensures we always have values assigned
+        credit_lines = data.get("total_credit_cards", 0) + data.get("total_loans", 0)
+        credit_mix = 0
     if credit_lines > 5:
         new_credit_score = 300
     elif credit_lines > 3:
@@ -78,8 +83,9 @@ def calculate_fico_score(data):
         new_credit_score * new_credit_weight +
         credit_mix_score * credit_mix_weight
     )
+    fico_score = (min(max(int(fico_score), 300), 850))
 
-    return  ((min(max(int(fico_score), 300), 850)), payment_history_score, credit_utilization_score, 
+    return  (fico_score, payment_history_score, credit_utilization_score, 
              credit_history_score, new_credit_score, credit_mix_score) # Ensure score is within 300-850 range
 
 

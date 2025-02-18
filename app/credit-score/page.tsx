@@ -5,6 +5,10 @@ import { useRouter } from "next/navigation";
 import "@/styles/credit-score.scss";
 import { auth, db } from "@/firebaseConfig";
 import { collection, addDoc } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
+import { getDatabase, ref, onValue } from "firebase/database";
+
 
 const CreditScore = () => {
     const router = useRouter();
@@ -23,8 +27,10 @@ const CreditScore = () => {
         credit_line_status: "",
         credit_overdue: "",
         total_loans: "",
+        total_credit_cards: "",
     });
-
+    
+    
     // Only allow logged‑in users to view this page.
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -49,6 +55,44 @@ const CreditScore = () => {
         setStep((prev) => prev - 1);
     };
 
+    const [ficoScore, setFicoScore] = useState(null); // State to store fico score
+
+    // send user_id and app_id after reviewing and submitting application
+    async function sendApplicationSubmitted(userId: string, appId: string) {
+        try {
+            const auth = getAuth();
+            const user = auth.currentUser;
+            
+            if (!user) {
+                console.error("No authenticated user.");
+                return;
+            }
+            console.log("authenticated user")
+            // Get Firebase ID token
+            const token = await user.getIdToken(); // Get JWT token
+            console.log(token)
+            const response = await fetch("/api/fico_score", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,  
+                },
+                body: JSON.stringify({
+                    user_id: userId,
+                    app_id: appId,
+                }),
+            });
+    
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+    
+            const data = await response.json();
+            setFicoScore(data?.['fico Score'])
+        
+            console.log("Response from server:", data);
+        } catch (error) {
+            console.error("Error sending application submitted request:", error);
+        }
+    }
     // Save the ordered responses to Firestore.
     const saveOrderedUserData = async () => {
         const user = auth.currentUser;
@@ -78,13 +122,20 @@ const CreditScore = () => {
                 { credit_line_status: formData.credit_line_status },
                 { credit_overdue: formData.credit_overdue },
                 { total_loans: formData.total_loans },
+                { total_credit_cards: formData.total_credit_cards },
             ];
 
-            await addDoc(collection(db, "users", user.uid, "creditScoreResponses"), {
+            const docRef = await addDoc(collection(db, "users", user.uid, "creditScoreResponses"), {
                 responses: orderedResponses,
                 timestamp: new Date(),
             });
-            setStep((prev) => prev + 1);
+            setStep((prev) => prev + 1); // Increment the step
+            if (docRef && docRef.id) { // Check if document reference and ID exist
+                sendApplicationSubmitted(user.uid, docRef.id); // Call the function
+                
+            } else {
+                console.error("Document creation failed. No ID returned.");
+            }
         } catch (error) {
             console.error("Error saving credit score data:", error);
         }
@@ -93,6 +144,7 @@ const CreditScore = () => {
     if (loading) {
         return <div>Loading...</div>;
     }
+
 
     return (
         <div className="credit-score-container">
@@ -307,6 +359,19 @@ const CreditScore = () => {
                                 handleInputChange("total_loans", e.target.value)
                             }
                         />
+                        <label>
+                            How many active credit cards do you have
+                            right now?
+                        </label>
+                        <input
+                            type="number"
+                            placeholder="Enter number of credit lines"
+                            className="text-input"
+                            value={formData.total_credit_cards}
+                            onChange={(e) =>
+                                handleInputChange("total_credit_cards", e.target.value)
+                            }
+                        />
                         <div className="navigation-buttons">
                             <button className="back-button" onClick={handleBack}>
                                 Go Back
@@ -338,7 +403,7 @@ const CreditScore = () => {
                 {step === 5 && (
                     <div className="final-credit-score-container">
                         {(() => {
-                            const score = 785;
+                            const score = ficoScore;
                             const maxScore = 850;
                             const ratio = score / maxScore;      // ~0.88
                             // At ratio=0 => degrees=90°, ratio=1 => degrees=270°

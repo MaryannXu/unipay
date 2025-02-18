@@ -61,44 +61,44 @@ class LoanTerms:
       return self.to_dict()
 
 class Fico_Application:
-   def __init__(self, ficoScore, account_balance, credit_length, credit_limit, credit_line_status, credit_overdue, total_loans, total_credit_cards):
+   def __init__(self, ficoScore, payment_history_score, credit_utilization_score, 
+             credit_history_score, new_credit_score, credit_mix_score):
         self.ficoScore = ficoScore
-        self.overduePayments = credit_overdue
-        self.sanctionedAmount = credit_limit
-        self.currentBalance = account_balance
-        self.creditHistoryLength = credit_length
-        self.creditLineStatus = credit_line_status
-        self.loanCount = total_loans
-        self.creditCount = total_credit_cards
+        self.payment_history_score = payment_history_score
+        self.credit_utilization_score = credit_utilization_score
+        self.credit_history_score = credit_history_score
+        self.new_credit_score = new_credit_score
+        self.credit_mix_score = credit_mix_score
+
    def to_dict(self): 
       return {
             "ficoScore": self.ficoScore,
-            "overduePayments": self.overduePayments,
-            "sanctionedAmount": self.sanctionedAmount,
-            "currentBalance": self.currentBalance,
-            "creditHistoryLength": self.creditHistoryLength,
-            "creditLineStatus": self.creditLineStatus,
-            "loanCount": self.loanCount,
-            "creditCount": self.creditCount
+            "payment_history_score": self.payment_history_score,
+            "credit_utilization_score": self.credit_utilization_score,
+            "credit_history_score": self.credit_history_score, 
+            "new_credit_score": self.new_credit_score, 
+            "credit_mix_score": self.credit_mix_score
         }
    def create_fico_score(self, user_id, app_id): 
-      try: 
-         
-         doc_ref = db.collection("users").document(user_id).collection("loanApplications").document(app_id)
-         doc = doc_ref.get()
+    try: 
+        doc_ref = db.collection("users").document(user_id).collection("creditScoreResponses").document(app_id)
+        doc = doc_ref.get()
+        
 
-         if doc.exists:
-            print("document exists. add fico score")
+
+        if doc.exists:
+            print("Document exists. Adding fico_score.")
             existing_data = doc.to_dict()
-            existing_fico_score = existing_data.get("ficoScore", {})
-            existing_fico_score.update(self.to_dict())  # Merge without overwriting other fields
-            doc_ref.set({"loanTerms": existing_fico_score}, merge=True)
-         else:
+            existing_loan_terms = existing_data.get("fico_score_data", {})
+            existing_loan_terms.update(self.to_dict())  # Merge without overwriting other fields
+            doc_ref.set({"fico_score_data": existing_loan_terms}, merge=True)
+        else:
             print("document does not exist")
-            doc_ref.set({"ficoScore": self.to_dict()}, merge=True)
-      except Exception as e: 
-         print("Error updating document", e)
-      return self.to_dict()
+            doc_ref.set({"fico_score_data": self.to_dict()}, merge=True)
+            
+    except Exception as e: 
+        print("Error updating document", e)
+    return self.to_dict()
 
 def interest_rate(user_id, app_id):
        try: 
@@ -180,6 +180,7 @@ def application_submitted():
 @app.route("/api/fico_score", methods=['POST'])
 def calculated_fico_score(): 
     try: 
+       
         # extract the token from the request headers
         auth_header = request.headers.get("Authorization")
         if not auth_header or not auth_header.startswith("Bearer "):
@@ -202,30 +203,45 @@ def calculated_fico_score():
         if authenticated_user_id != user_id:
             return jsonify({"error": "Unauthorized access"}), 403
         
-        features = {
-                "fico_score": data.get("ficoScore", "N/A"),
-                "account_balance": data.get("accountBalance", "N/A"),
-                "credit_length": data.get("creditHistory", {}).get("creditLength", "N/A"),
-                "credit_limit": data.get("creditHistory", {}).get("creditLimit", "N/A"),
-                "credit_line_status": data.get("creditHistory", {}).get("creditLineStatus", "N/A"),
-                "credit_overdue": data.get("creditHistory", {}).get("creditOverdue", "N/A"),
-                "total_loans": data.get("creditHistory", {}).get("totalLoans", "N/A"),
-                "total_credit_cards": data.get("creditHistory", {}).get("totalCreditCards", "N/A"),
-                "weekly_spending": data.get("weeklySpending", "N/A"),
-            }
-        fico_score = calculated_fico_score(features)
-        obj = Fico_Application(features)
-        updated_fico_score = obj.create_fico_score(user_id, app_id)
-        return jsonify({"message": "fico score application submitted successfully", "fico score": fico_score})
-
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-
-
-
+        doc_ref = db.collection("users").document(user_id).collection("creditScoreResponses").document(app_id)
+        doc = doc_ref.get()
+        if not doc.exists:
+            return jsonify({"error": "Document not found"}), 404
+            
+        doc_data = doc.to_dict()
         
+        # Extract responses array from the document
+        responses = doc_data.get("responses", [])
+        
+        # Convert responses array to dictionary for easier access
+        data_dict = {}
+        for item in responses:
+            data_dict.update(item)
+        
+        def to_number(value):
+            try:
+                return float(value) if value not in ["N/A", None, ""] else 0.0
+            except ValueError:
+                return 0.0
+                
+        features = {
+            "account_balance": to_number(data_dict.get("account_balance", "N/A")),
+            "credit_length": to_number(data_dict.get("credit_length", "N/A")),
+            "credit_limit": to_number(data_dict.get("credit_limit", "N/A")),
+            "credit_line_status": to_number(data_dict.get("credit_line_status", "N/A")),
+            "credit_overdue": to_number(data_dict.get("credit_overdue", "N/A")),
+            "total_loans": to_number(data_dict.get("total_loans", "N/A")),
+            "total_credit_cards": to_number(data_dict.get("total_credit_cards", "N/A")),
+        }
+        
+        fico_score, payment_history_score, credit_utilization_score, credit_history_score, new_credit_score, credit_mix_score = calculate_fico_score(features)
+
+        obj = Fico_Application(fico_score, payment_history_score, credit_utilization_score, credit_history_score, new_credit_score, credit_mix_score)
+        new_fico_score = obj.create_fico_score(user_id, app_id)
+        return jsonify({"message": "fico score application submitted successfully", "fico Score": fico_score})
+
     except Exception as e:
+        print(f"Error in calculated_fico_score: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
 
