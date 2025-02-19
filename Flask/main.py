@@ -15,7 +15,7 @@ app = Flask(__name__)
 CORS(app, resources={r"/api/": {"origins":["http://localhost:3000", "https://flask-fire-611946450050.us-central1.run.app"]}}) 
 
 os.environ["LOKY_MAX_CPU_COUNT"] = "4"
-cred = credentials.Certificate("../unipayf24-firebase-adminsdk-htopk-7786ba0ef8.json")  
+cred = credentials.Certificate("./unipayf24-firebase-adminsdk-htopk-7786ba0ef8.json")  
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 
