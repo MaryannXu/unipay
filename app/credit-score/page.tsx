@@ -56,7 +56,20 @@ const CreditScore = () => {
     };
 
     const [ficoScore, setFicoScore] = useState(null); // State to store fico score
-
+    interface ScoreStatus {
+        payment_history_status: string;
+        credit_utilization_status: string;
+        credit_history_status: string;
+        new_credit_status: string;
+        credit_mix_status: string;
+      }
+    const [scoreStatus, setScoreStatus] = useState({
+        payment_history_status: "",
+        credit_utilization_status: "",
+        credit_history_status: "", 
+        new_credit_status: "", 
+        credit_mix_status: ""
+    })
     // send user_id and app_id after reviewing and submitting application
     async function sendApplicationSubmitted(userId: string, appId: string) {
         try {
@@ -87,6 +100,14 @@ const CreditScore = () => {
     
             const data = await response.json();
             setFicoScore(data?.['fico Score'])
+            const scoreData = { 
+                payment_history_status: data.payment_history_status, 
+                credit_utilization_status: data.credit_utilization_status,
+                credit_history_status: data.credit_history_status, 
+                new_credit_status: data.new_credit_status, 
+                credit_mix_status: data.credit_mix_status
+            }   
+            setScoreStatus(scoreData)
         
             console.log("Response from server:", data);
         } catch (error) {
@@ -404,10 +425,17 @@ const CreditScore = () => {
                     <div className="final-credit-score-container">
                         {(() => {
                             const maxScore = 850;
-                            const score = ficoScore ?? 0;
+                            const score = ficoScore ?? 0 ;
                             const ratio = score / maxScore;      // ~0.88
                             // At ratio=0 => degrees=90°, ratio=1 => degrees=270°
                             const degrees = 90 + 180 * ratio;
+                            const getFicoScoreCategory = (score: number): string => {
+                                if (score < 500) return "Poor";
+                                if (score >= 500 && score < 750) return "Mediocre";
+                                if (score >= 750) return "Good";
+                                return "Unknown"; // Default case for unexpected values
+                              };
+                            
 
                             return (
                                 <>
@@ -426,13 +454,13 @@ const CreditScore = () => {
                                                     style={{ "--progress": `${degrees}deg` } as React.CSSProperties}
                                                 />
                                                 {/* 3) Score text centered on top */}
-                                                <div className="gauge-score">{score}</div>
+                                                <div className="gauge-score">{score === 0 ? "..." : score}</div>
                                             </div>
 
                                             <p className="score-text">
                                                 FICO SCORE
                                                 <br />
-                                                GOOD
+                                                {getFicoScoreCategory(score)}
                                             </p>
                                         </div>
 
@@ -444,10 +472,25 @@ const CreditScore = () => {
                                             </p>
                                             <ul>
                                                 <li><span>New Credit</span><span>10%</span></li>
+                                                <p style={{ color: scoreStatus.new_credit_status !== "Good" ? "red" : "green" }}>
+                                                    {scoreStatus.new_credit_status}
+                                                </p>
                                                 <li><span>Amounts Owed</span><span>30%</span></li>
+                                                <p style={{ color: scoreStatus.credit_utilization_status !== "Good" ? "red" : "green" }}>
+                                                    {scoreStatus.credit_utilization_status}
+                                                </p>
                                                 <li><span>Length of Credit History</span><span>15%</span></li>
+                                                <p style={{ color: scoreStatus.credit_history_status !== "Good" ? "red" : "green" }}> 
+                                                    {scoreStatus.credit_history_status}
+                                                </p>
                                                 <li><span>Credit Mix</span><span>10%</span></li>
+                                                <p style={{ color: scoreStatus.credit_mix_status !== "Good" ? "red" : "green" }}>
+                                                    {scoreStatus.credit_mix_status}
+                                                </p>
                                                 <li><span>Payment History</span><span>35%</span></li>
+                                                <p style={{ color: scoreStatus.payment_history_status !== "Good" ? "red" : "green" }}>
+                                                    {scoreStatus.payment_history_status}
+                                                </p>
                                             </ul>
                                             <p className="disclaimer">
                                                 In no way is this a precise reflection of the actual FICO/Vantage score. This is strictly

@@ -83,15 +83,13 @@ class Fico_Application:
     try: 
         doc_ref = db.collection("users").document(user_id).collection("creditScoreResponses").document(app_id)
         doc = doc_ref.get()
-        
-
 
         if doc.exists:
             print("Document exists. Adding fico_score.")
             existing_data = doc.to_dict()
-            existing_loan_terms = existing_data.get("fico_score_data", {})
-            existing_loan_terms.update(self.to_dict())  # Merge without overwriting other fields
-            doc_ref.set({"fico_score_data": existing_loan_terms}, merge=True)
+            existing_score = existing_data.get("fico_score_data", {})
+            existing_score.update(self.to_dict())  # Merge without overwriting other fields
+            doc_ref.set({"fico_score_data": existing_score}, merge=True)
         else:
             print("document does not exist")
             doc_ref.set({"fico_score_data": self.to_dict()}, merge=True)
@@ -233,12 +231,35 @@ def calculated_fico_score():
             "total_loans": to_number(data_dict.get("total_loans", "N/A")),
             "total_credit_cards": to_number(data_dict.get("total_credit_cards", "N/A")),
         }
-        
+
         fico_score, payment_history_score, credit_utilization_score, credit_history_score, new_credit_score, credit_mix_score = calculate_fico_score(features)
 
         obj = Fico_Application(fico_score, payment_history_score, credit_utilization_score, credit_history_score, new_credit_score, credit_mix_score)
         new_fico_score = obj.create_fico_score(user_id, app_id)
-        return jsonify({"message": "fico score application submitted successfully", "fico Score": fico_score})
+
+        if payment_history_score >= 700: 
+            payment_history_status = "Good"
+        else: 
+            payment_history_status = "Needs work"
+        if credit_utilization_score >= 700: 
+            credit_utilization_status = "Good"
+        else: 
+            credit_utilization_status = "Needs work"  
+        if credit_history_score >= 700: 
+            credit_history_status = "Good"
+        else: 
+            credit_history_status = "Needs work"      
+        if new_credit_score >= 700: 
+            new_credit_status = "Good"
+        else: 
+            new_credit_status = "Needs work"     
+        if credit_mix_score >= 700: 
+            credit_mix_status = "Good"
+        else: 
+            credit_mix_status = "Needs work"     
+
+        return jsonify({"message": "success!", "fico Score": fico_score, "payment_history_status": payment_history_status, "credit_utilization_status": credit_utilization_status, 
+                        "credit_history_status":credit_history_status, "new_credit_status": new_credit_status, "credit_mix_score": credit_mix_status})
 
     except Exception as e:
         print(f"Error in calculated_fico_score: {str(e)}")

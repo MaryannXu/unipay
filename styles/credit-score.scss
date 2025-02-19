@@ -255,11 +255,14 @@ p {
           justify-content: space-between;
           margin-bottom: 0.4rem;
           font-size: 1rem;
+          font-weight: bold;
           span {
             /* If you want to style the label vs. the percentage differently, do so here */
           }
         }
+       
       }
+      
 
       .disclaimer {
         font-size: 0.9rem;
@@ -273,4 +276,9 @@ p {
     margin-top: 1rem;
     align-self: flex-start;
   }
+  
+  
 }
+
+
+       

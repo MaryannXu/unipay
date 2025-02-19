@@ -91,14 +91,13 @@ def calculate_fico_score(data):
 
 if __name__ == "__main__":
     data = {
-        "overduePayments": 0,  # 
-        "sanctionedAmount": 5000,  # 
-        "currentBalance": 0,  # 
-        "creditHistoryLength": 3,  # 
-        "creditLineStatus": "both",  # 
-        "loanCount": 1,  # 
-        "creditCount": 2  # 
+        "credit_overdue": 0,  # 0 means no overdue payments
+        "account_balance": 0,  # Current account balance
+        "credit_limit": 0,  # Total credit limit across all accounts
+        "total_loans": 0,  # Number of loans the user has
+        "credit_line_status": "both",  # Can be "none", "loans", "credit", or "both"
+        "total_credit_cards": 0  # Number of active credit card accounts
     }
     
     fico_score = calculate_fico_score(data)
-    print(fico_score,)
+    print(fico_score)
