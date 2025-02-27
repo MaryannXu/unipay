@@ -89,22 +89,21 @@ export default function SectionQuote() {
                         <Icon_quote />
                     </div>
                     <small className="section-quote__top-caption">
-                        Fuel your education and career growth
+                        Fuel your education and career growth in the U.S
                     </small>
                 </div>
                 <ul className="section-quote__list">
                     <li className="section-quote-item">
                         <q className="section-quote-quote-text">
-                        I've struggled to find the right financing for my education.
-                        UniPay's combination of technology and deep understanding 
-                        of global finance, empowers students like me to unlock their 
-                        potential and thrive in their academic journey. 
+                        I've struggled to find the right student loans for my education.
+                        UniPay's empowered me to unlock my 
+                        potential and thrive. 
                         
                         </q>
                         <div className="section-quote__person">
                             <div className="section-quote__person-image">
                                 <Image
-                                    src={'/img/jadenDahliwal.jpg'}
+                                    src={'/img/uscStudent.jpg'}
                                     alt={'USC Viterbi Dean'}
                                     fill
                                     sizes="(max-width: 768px) 200px, (max-width: 1200px) 400px"
@@ -112,10 +111,10 @@ export default function SectionQuote() {
                             </div>
                             <div className="section-quote__person-text">
                                 <strong className="section-quote__person-name">
-                                    Jaden Dalhiwal
+                                    Meiriane
                                 </strong>
                                 <small className="section-quote__person-position">
-                                    Student, <br /> USC Marshall
+                                    Graduate Student, <br /> USC Marshall
                                     School of Business
                                 </small>
                             </div>

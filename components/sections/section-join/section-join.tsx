@@ -16,7 +16,7 @@ const SectionJoin = () => {
                 <div className='section-join__content-wrapper'>
                     <div className='section-join__heading-wrapper'>
                         <small className='section-join__top-caption'>Turn ambition into opportunity</small>
-                        <h2 className='section-join__heading'>Join us in supporting student success. </h2>
+                        <h2 className='section-join__heading'>Join us in supporting financial growth. </h2>
                     </div>
                     <button className='section-join__cta-button' onClick={() => router.push("/investor-eligibility")}>
                         Join UniPay

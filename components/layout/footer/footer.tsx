@@ -100,8 +100,8 @@ export default function Footer() {
                         <li onClick={() => lenis.scrollTo('#whyus', { offset: 100 })} className='footer__projects-item'>
                             Financial Assistance
                         </li>
-                        <li className='footer__projects-item soon'>Student Refinancing</li>
-                        <li className='footer__projects-item soon'>Undergraduate Student Loans</li>
+                        <li className='footer__projects-item soon'>Banking</li>
+                        <li className='footer__projects-item soon'>Credit</li>
                     </ul>
                 </div>
                 <div className='footer__copyright-wrapper'>

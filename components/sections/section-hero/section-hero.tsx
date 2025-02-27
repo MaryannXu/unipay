@@ -20,17 +20,16 @@ export default function SectionHero() {
                     <SectionHeroHeading />
                     <div className="section-hero__subheading-layout">
                         <p className="section-hero__caption">
-                            UniPay is a new way to finance your studies in the U.S—one where we care about your future
-                            success.
+                             Get access to more financial products in the U.S
                         </p>
                         <button className="section-hero__order-button"
-                                onClick={() => router.push("/eligibility")}>Start Now
+                                onClick={() => router.push("/credit-score")}>Start Now
                         </button>
                     </div>
                 </div>
                 <div className="section-hero__slider-wrapper">
-                    <h2 className="section-hero__filler">Community Driven Lending</h2>
-                    <h2 className="section-hero__interest-rate">for interest rates as low as 7.5%</h2>
+                    <h2 className="section-hero__filler">Customer Driven Services</h2>
+                    <h2 className="section-hero__interest-rate">Apply with confidence.</h2>
                     <span
                         onClick={() => lenis.scrollTo('.section-whyus__container', { offset: 0 })}
                         className="section-hero__slider-button"

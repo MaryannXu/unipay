@@ -19,6 +19,7 @@ function SectionHeroHeadingSpan({ word, isActive, shouldHide }: HeadingSapnProps
 
 export default function SectionHeroHeading() {
     const [currentWord, setCurrentWord] = useState(0);
+    const ITEMS = ["credit invisibles", "you", "international students", "immigrants"];
     const prevWord = currentWord === 0 ? ITEMS.length - 1 : currentWord - 1;
 
     const changeWord = () => {
@@ -36,12 +37,17 @@ export default function SectionHeroHeading() {
 
     return (
         <div className='section-hero__heading'>
-            <h1 className='section-hero__heading-main'>Borderless </h1>
+            <h1 className='section-hero__heading-main'>Bringing Financial <br/> Opportunity to</h1>
             <span className='section-hero__heading-roll'>
-                Student Financing
-                {/*{ITEMS.map((el, i) => (*/}
-                {/*    <SectionHeroHeadingSpan key={i} word={el} isActive={currentWord === i} shouldHide={prevWord === i} />*/}
-                {/*))}*/}
+                {/* Rotating words for "Credit Invisibles" */}
+                {[" credit invisibles", " you", " international students", " immigrants"].map((el, i) => (
+                    <SectionHeroHeadingSpan 
+                        key={i} 
+                        word={el} 
+                        isActive={currentWord === i} 
+                        shouldHide={prevWord === i} 
+                    />
+                ))}
             </span>
         </div>
     );

@@ -229,45 +229,91 @@ p {
 
 
 
-    /* Credit Factors (right side) */
     .credit-factors {
       flex: 1;
       display: flex;
       flex-direction: column;
-
-      h3 {
-        font-size: 1.6rem;
-        margin-bottom: 0.5rem;
+    }
+    
+    .credit-factors h3 {
+      font-size: 1.6rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .credit-factors p {
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
+    
+    .credit-factors ul {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 1rem 0;
+    }
+    
+    .credit-factors li {
+      display: flex;
+      flex-direction: column; /* Ensure the dropdown stays underneath */
+      margin-bottom: 0.8rem;
+      font-size: 1rem;
+      font-weight: bold;
+      position: relative;
+    }
+    
+    /* Flexbox to separate label and weight */
+    .credit-factor-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+    
+    /* Spacing and positioning */
+    .credit-label {
+      flex-grow: 1;
+      text-align: left;
+    }
+    
+    .credit-weight {
+      text-align: right;
+    }
+    
+    /* Status color */
+    .credit-status {
+      font-size: 0.9rem;
+      font-weight: normal;
+      margin-top: 0.3rem;
+    }
+      .dropdown-container{ 
+        border-radius: 10px;
+        margin-bottom: 5px;
+        margin-top: 3px;
+        gap: 12px;
       }
-
-      p {
-        margin-bottom: 1rem;
-        font-size: 1rem;
+      .parent-credit-container{ 
+        display: flex;
+        justify-content: space-between;  // Push left & right sections apart
+        align-items: center;  // Align items vertically
+        gap: 24px; 
       }
-
-      ul {
-        list-style: none;
-        padding: 0;
-        margin: 0 0 1rem 0;
-
-        li {
-          display: flex;
-          justify-content: space-between;
-          margin-bottom: 0.4rem;
-          font-size: 1rem;
-          font-weight: bold;
-          span {
-            /* If you want to style the label vs. the percentage differently, do so here */
-          }
-        }
-       
+      .nav-to-dashboard{ 
+        flex: 1;  // Takes up equal space in flexbox
       }
-      
+      .credit-info-container{
+        flex: 0.3;  // Smaller portion on the right
+        display: flex;
+        justify-content: flex-end;
+
+      }
+    
 
       .disclaimer {
         font-size: 0.9rem;
         color: #888;
         margin-top: 1rem;
+      }
+      .dropdown-contents{ 
+        font-weight: normal;
       }
     }
   }
@@ -278,7 +324,7 @@ p {
   }
   
   
-}
+
 
 
        

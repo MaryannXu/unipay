@@ -13,7 +13,7 @@ export default function SectionInnovation() {
                 <div className='section-innovation__header'>
                     <div className='section-innovation__heading-wrapper'>
                         <small className='section-innovation__top-caption'>WHAT ARE OUR DIFFERENTIATORS?</small>
-                        <h2 className='section-innovation__heading'>We Redefine Finance</h2>
+                        <h2 className='section-innovation__heading'>We Redefine Financial Access</h2>
                     </div>
                     <p className='section-innovation__description-text'>
                         Your growth is our priority, with tailored solutions, financial empowerment, and a network of support.
@@ -28,8 +28,8 @@ export default function SectionInnovation() {
                             <h3 className='section-innovation__description-heading'>Holistic Perspective</h3>
                             <p className='section-innovation__description-text'>
                                 We understand you are at an early point in your career.
-                                To make sure our assessment of your potential is fair,
-                                we look at your all around potential.
+                                To make sure our assessment of your financial health is fair,
+                                we look at your all around success.
                             </p>
                         </div>
                     </li>
@@ -50,11 +50,9 @@ export default function SectionInnovation() {
                             <Icon_marketplace/>
                         </div>
                         <div className='section-innovation__grid-description'>
-                            <h3 className='section-innovation__description-heading'>Community Driven</h3>
+                            <h3 className='section-innovation__description-heading'>Customer Driven Products</h3>
                             <p className='section-innovation__description-text'>
-                                We care about you. And so do others. That's why we bring on 
-                                supporters of your university to form a community driven
-                                lending system.
+                            We prioritize your needs by offering tailored products with full transparency.
                             </p>
                         </div>
                     </li>

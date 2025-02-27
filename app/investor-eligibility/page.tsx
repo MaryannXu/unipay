@@ -1,6 +1,6 @@
 "use client";
-
 import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Confetti from "react-confetti";
 import { useWindowSize } from "react-use";
@@ -50,7 +50,7 @@ const InvestorEligibility: React.FC = () => {
 
     // Show confetti on final step if user is eligible
     useEffect(() => {
-        if (step === 3 && isEligible) {
+        if (step === 4 && isEligible) {
             setShowConfetti(true);
             const timeout = setTimeout(() => setShowConfetti(false), 4000);
             return () => clearTimeout(timeout);
@@ -59,16 +59,26 @@ const InvestorEligibility: React.FC = () => {
 
     return (
         <div className="investor-eligibility-container">
+            
             <div className="investor-eligibility-section">
+            <AnimatePresence mode="wait">
+            <motion.div
+                    key={step}
+                    initial={{ opacity: 0, x: 50 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -50 }}
+                    transition={{ duration: 0.4, ease: "easeInOut" }}
+                    className="step-container"
+                >
                 {/**
                  * STEP 0
                  */}
                 {step === 0 && (
                     <div>
-                        <h1>Are you an individual or institutional investor?</h1>
-                        <p>You can invest as an individual or on behalf of an institution.</p>
+                        <h1>What type of company are you?</h1>
+                        <p>Lending service, banking, credit?</p>
                         <div className="options">
-                            {["Individual", "Institution"].map((option) => (
+                            {["Lending", "Banking", "Credit", "Other"].map((option) => (
                                 <button
                                     key={option}
                                     className="option-button"
@@ -97,81 +107,15 @@ const InvestorEligibility: React.FC = () => {
                  */}
                 {step === 1 && (
                     <div>
-                        <h1>Are you an accredited investor?</h1>
-                        <p>To invest in UniPay, you need to be an accredited investor.</p>
+                        <h1>Are you a licensed financial institution</h1>
+                        <p>To ensure the safety of UniPay and it's members, we need to make sure you're legit.</p>
                         <div className="options">
-                            {/* Example accredited options. You can adjust these as needed */}
-                            <button
-                                className="option-button"
-                                onClick={() => {
-                                    handleInputChange("accreditation", "200k");
-                                    handleNext();
-                                }}
-                            >
-                                I earn $200k+ yearly (or $300k+ if filing jointly)
-                            </button>
-                            <button
-                                className="option-button"
-                                onClick={() => {
-                                    handleInputChange("accreditation", "1M");
-                                    handleNext();
-                                }}
-                            >
-                                I have $1M+ in assets, excluding primary residence
-                            </button>
-                            <button
-                                className="option-button"
-                                onClick={() => {
-                                    handleInputChange("accreditation", "seriesLicense");
-                                    handleNext();
-                                }}
-                            >
-                                I hold a current Series 7, 65 or 82 license
-                            </button>
-                            <button
-                                className="option-button"
-                                onClick={() => {
-                                    handleInputChange("accreditation", "anotherWay");
-                                    handleNext();
-                                }}
-                            >
-                                I am accredited in another way
-                            </button>
-                            <button
-                                className="option-button"
-                                onClick={() => {
-                                    handleInputChange("accreditation", "none");
-                                    handleNext();
-                                }}
-                            >
-                                None of the above. I am not accredited
-                            </button>
-                        </div>
-                        <div className="navigation-buttons">
-                            <button className="back-button" onClick={handleBack}>
-                                Go Back
-                            </button>
-                        </div>
-                    </div>
-                )}
-
-                {/**
-                 * STEP 2
-                 */}
-                {step === 2 && (
-                    <div>
-                        <h1>What type of account do you want to open?</h1>
-                        <p>
-                            Your account can be set up as an individual, joint, retirement,
-                            or entity.
-                        </p>
-                        <div className="options">
-                            {["Individual", "Joint", "Retirement", "Entity"].map((option) => (
+                            {["Yes", "No"].map((option) => (
                                 <button
                                     key={option}
                                     className="option-button"
                                     onClick={() => {
-                                        handleInputChange("accountType", option);
+                                        handleInputChange("investorType", option);
                                         handleNext();
                                     }}
                                 >
@@ -188,9 +132,81 @@ const InvestorEligibility: React.FC = () => {
                 )}
 
                 {/**
-                 * STEP 3 (FINAL)
+                 * STEP 2
+                 */}
+                {step === 2 && (
+                    <div>
+                        <h1>Why are you interested in partnering with UniPay?</h1>
+                        <p>
+                            We're here to serve those who lack U.S credit scores by utilizing alternative data. If this interests please continue!
+                        </p>
+                        <div className="options">
+                            <input
+                                type="text"
+                                className="option-input"
+                                placeholder="Enter your response"
+                                onChange={(e) => handleInputChange("investorType", e.target.value)}
+                            />
+                            <button className="option-button" onClick={handleNext}>
+                                Next
+                            </button>
+                        </div>
+                        <div className="navigation-buttons">
+                            <button className="back-button" onClick={handleBack}>
+                                Go Back
+                            </button>
+                        </div>
+                    </div>
+                )}
+                 {/**
+                 * STEP 3
                  */}
                 {step === 3 && (
+                    <div>
+                        <h1>Contact Information</h1>
+                        <p>
+                            
+                        </p>
+                        <div className="options">
+                        <div className="input-group">
+                            <label className="input-label">Company</label>
+                            <input
+                                type="text"
+                                className="option-input"
+                                placeholder="company name"
+                                onChange={(e) => handleInputChange("investorType", e.target.value)}
+                            />
+                            <label className="input-label">Name</label>
+                            <input
+                                type="text"
+                                className="option-input"
+                                placeholder="your name"
+                                onChange={(e) => handleInputChange("investorType", e.target.value)}
+                            />
+                            <label className="input-label">email</label>
+                            <input
+                                type="text"
+                                className="option-input"
+                                placeholder="company email"
+                                onChange={(e) => handleInputChange("investorType", e.target.value)}
+                            />
+                            </div>
+                            <button className="option-button" onClick={handleNext}>
+                                Next
+                            </button>
+                        <div className="navigation-buttons">
+                            <button className="back-button" onClick={handleBack}>
+                                Go Back
+                            </button>
+                        </div>
+                        </div>
+                    </div>
+                )}
+
+                {/**
+                 * STEP 4 (FINAL)
+                 */}
+                {step === 4 && (
                     <div>
                         {/* If user is eligible, show confetti for a few seconds */}
                         {showConfetti && (
@@ -203,9 +219,9 @@ const InvestorEligibility: React.FC = () => {
                         {isEligible ? (
                             <span>
                 <h1 className="congrats-decision">
-                  Congratulations! You are eligible to invest.
+                  Congratulations! We're excited you'd like to work with us.
                 </h1>
-                <p>Next step is to get in touch with us.</p>
+                <p>We'll be in contact shortly. Feel free to contact us</p>
                 <button
                     className="begin-button"
                     onClick={() => router.push("/#contact")}
@@ -235,6 +251,8 @@ const InvestorEligibility: React.FC = () => {
                         )}
                     </div>
                 )}
+                </motion.div>
+                </AnimatePresence>
             </div>
         </div>
     );

@@ -39,7 +39,26 @@ p {
   gap: 1rem;
   margin: 2rem 0;
 }
-
+.input-group{ 
+  font-weight: bold;
+  justify-content: flex-start;
+  text-align: left;
+}
+.option-input {
+  padding: 10px; /* Adds space inside the text box */
+  width: 100%; /* Adjust width as needed */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  line-height: 1; 
+}
+.input-label {
+  font-weight: bold;
+  color: grey;
+  margin-bottom: 5px;
+  display: inline-block;
+  width: 100%;
+}
 .option-button,
 .begin-button {
   background-color: var(--main-color);

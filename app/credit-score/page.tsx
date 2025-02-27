@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import "@/styles/credit-score.scss";
 import { auth, db } from "@/firebaseConfig";
@@ -8,7 +9,7 @@ import { collection, addDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { getDatabase, ref, onValue } from "firebase/database";
-
+import Dropdown from "./dropdown";
 
 const CreditScore = () => {
     const router = useRouter();
@@ -29,8 +30,18 @@ const CreditScore = () => {
         total_loans: "",
         total_credit_cards: "",
     });
-    
-    
+
+    //dropdown
+    const creditFactors = [
+        { label: "New Credit", weight: "10%", statusKey: "new_credit_status", description: "New credit accounts impact your score." },
+        { label: "Amounts Owed", weight: "30%", statusKey: "credit_utilization_status", description: "The amount you owe impacts credit utilization." },
+        { label: "Length of Credit History", weight: "15%", statusKey: "credit_history_status", description: "Longer credit history can boost your score." },
+        { label: "Credit Mix", weight: "10%", statusKey: "credit_mix_status", description: "A diverse credit mix is beneficial." },
+        { label: "Payment History", weight: "35%", statusKey: "payment_history_status", description: "Consistent on-time payments improve credit scores." },
+    ];
+    //dropdown
+    const [openDropdownIndex, setOpenDropdownIndex] = useState<number | null>(null);
+    const ref = useRef<HTMLDivElement>(null);
     // Only allow logged‑in users to view this page.
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -105,7 +116,7 @@ const CreditScore = () => {
                 credit_utilization_status: data.credit_utilization_status,
                 credit_history_status: data.credit_history_status, 
                 new_credit_status: data.new_credit_status, 
-                credit_mix_status: data.credit_mix_status
+                credit_mix_status: data.credit_mix_score
             }   
             setScoreStatus(scoreData)
         
@@ -166,14 +177,22 @@ const CreditScore = () => {
         return <div>Loading...</div>;
     }
 
-
     return (
         <div className="credit-score-container">
             <div className="credit-score-section">
+                <AnimatePresence mode="wait">
+                                <motion.div
+                                    key={step}
+                                    initial={{ opacity: 0, x: 50 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: -50 }}
+                                    transition={{ duration: 0.4, ease: "easeInOut" }}
+                                    className="step-container"
+                                >
                 {step === 0 && (
                     <div>
-                        <h1 className="highlight">Credit Score Information</h1>
-                        <p>Please provide your housing information below.</p>
+                        <h1 className="highlight">A Few Questions</h1>
+                        <p>We want to get to know you!</p>
                         <label>
                             How much do you typically pay for rent each month?
                         </label>
@@ -438,77 +457,69 @@ const CreditScore = () => {
                             
 
                             return (
-                                <>
+                                <div className="parent-credit-container">
+                                    <div className="credit-info-container">
                                     <h1 className="credit-health-title">Credit Health</h1>
                                     <h2 className="credit-score-subtitle">
-                                        {score} out of {maxScore}
+                                        status: {getFicoScoreCategory(score)}
                                     </h2>
 
                                     <div className="credit-score-content">
-                                        <div className="score-gauge">
-                                            {/* 1) Container is half-circle shape (150x75) */}
-                                            <div className="gauge-container">
-                                                {/* 2) Full circle with conic gradient */}
-                                                <div
-                                                    className="gauge"
-                                                    style={{ "--progress": `${degrees}deg` } as React.CSSProperties}
-                                                />
-                                                {/* 3) Score text centered on top */}
-                                                <div className="gauge-score">{score === 0 ? "..." : score}</div>
-                                            </div>
 
-                                            <p className="score-text">
-                                                FICO SCORE
-                                                <br />
-                                                {getFicoScoreCategory(score)}
-                                            </p>
-                                        </div>
 
                                         {/* Right side: Credit factors, disclaimers, etc. */}
+                                        <motion.div 
+                                            className="parent-container" 
+                                            layout  // Enables smooth size adjustment
+                                            transition={{ type: "spring", stiffness: 120, damping: 14 }}  // Smooth transition
+                                        >
                                         <div className="credit-factors">
-                                            <h3>Credit Factors</h3>
-                                            <p>
-                                                Dig into your credit card and payment history first. You can improve those factors quickly.
-                                            </p>
+                                        <h3>Credit Factors</h3>
+                                            <p>Dig into your credit card and payment history first. You can improve those factors quickly.</p>
                                             <ul>
-                                                <li><span>New Credit</span><span>10%</span></li>
-                                                <p style={{ color: scoreStatus.new_credit_status !== "Good" ? "red" : "green" }}>
-                                                    {scoreStatus.new_credit_status}
-                                                </p>
-                                                <li><span>Amounts Owed</span><span>30%</span></li>
-                                                <p style={{ color: scoreStatus.credit_utilization_status !== "Good" ? "red" : "green" }}>
-                                                    {scoreStatus.credit_utilization_status}
-                                                </p>
-                                                <li><span>Length of Credit History</span><span>15%</span></li>
-                                                <p style={{ color: scoreStatus.credit_history_status !== "Good" ? "red" : "green" }}> 
-                                                    {scoreStatus.credit_history_status}
-                                                </p>
-                                                <li><span>Credit Mix</span><span>10%</span></li>
-                                                <p style={{ color: scoreStatus.credit_mix_status !== "Good" ? "red" : "green" }}>
-                                                    {scoreStatus.credit_mix_status}
-                                                </p>
-                                                <li><span>Payment History</span><span>35%</span></li>
-                                                <p style={{ color: scoreStatus.payment_history_status !== "Good" ? "red" : "green" }}>
-                                                    {scoreStatus.payment_history_status}
-                                                </p>
+                                            {creditFactors.map((factor, index) => (
+                                                <li
+                                            key={index}
+                                            onMouseEnter={() => setOpenDropdownIndex(index)}
+                                            onMouseLeave={() => setOpenDropdownIndex(null)}
+                                            style={{ position: "relative" }}
+                                            >
+                                            <div className="credit-factor-item">
+                                                <span className="credit-label">{factor.label}</span>
+                                                <span className="credit-weight">{factor.weight}</span>
+                                            </div>
+                                            
+                                            <p className="credit-status" style={{ color: scoreStatus[factor.statusKey] !== "Good" ? "red" : "green" }}>
+                                                {scoreStatus[factor.statusKey]}
+                                            </p>
+
+                                            <AnimatePresence>
+                                                {openDropdownIndex === index && (
+                                                <Dropdown ref={ref} isOpen={true} text={factor.description} />
+                                                )}
+                                            </AnimatePresence>
+                                            </li>
+                                            ))}
                                             </ul>
                                             <p className="disclaimer">
-                                                In no way is this a precise reflection of the actual FICO/Vantage score. This is strictly
-                                                for demonstration purposes and does not represent any form of financial equivalence.
+                                            In no way is this a precise reflection of the actual FICO/Vantage score. This is strictly for demonstration purposes and does not represent any form of financial equivalence.
                                             </p>
                                         </div>
+                                        </motion.div>
                                     </div>
-
+                                    </div>
+                                    <div className="nav-to-dashboard">
                                     <button className="first-back-button" onClick={() => router.push("/")}>
-                                        Return to Home
+                                        See what you can do with you're score 
                                     </button>
-                                </>
+                                    </div>
+                                </div>
                             );
                         })()}
                     </div>
                 )}
-
-
+                </motion.div>
+            </AnimatePresence>
             </div>
         </div>
     );

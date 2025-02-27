@@ -25,7 +25,7 @@ const LIST: ItemProps[] = [
         lottieSrc: './lottie/step1.json',
         LottieLoader: LottieLoader1,
         heading: 'Check Your Eligibility',
-        text: 'as an international student.',
+        text: 'as an credit invisible',
     },
     {
         lottieSrc: './lottie/step2.json',
@@ -36,7 +36,7 @@ const LIST: ItemProps[] = [
     {
         lottieSrc: './lottie/step3.json',
         LottieLoader: LottieLoader3,
-        heading: 'Focus on Your Studies',
+        heading: 'Focus on You',
         text: 'while we handle the rest.',
     },
 ];
