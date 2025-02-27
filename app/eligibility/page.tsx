@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import "@/styles/eligibility.scss";
 import Confetti from "react-confetti";
@@ -162,11 +163,20 @@ const Eligibility = () => {
     return (
         <div className="eligibility-container">
             <div className="eligibility-section">
+            <AnimatePresence mode="wait">
+                <motion.div
+                    key={step}
+                    initial={{ opacity: 0, x: 50 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -50 }}
+                    transition={{ duration: 0.4, ease: "easeInOut" }}
+                    className="step-container"
+                >
                 {step === 0 && (
                     <div>
-                        <h1 className="highlight">Student Eligibility Form</h1>
+                        <h1 className="highlight">Eligibility Form</h1>
                         <p>
-                            UniPay is looking forward to helping you. We're on this journey together! Start by filling out this quick eligibility form.
+                            UniPay is looking forward to helping you. We're on this journey together! Start by filling out this quick form.
                         </p>
                         {/* FIRST NAME */}
                         <input
@@ -206,7 +216,7 @@ const Eligibility = () => {
 
                 {step === 1 && (
                     <div>
-                        <h1>What is your current status?</h1>
+                        <h1>Are you studying in the U.S?</h1>
                         <p>To ensure we are on the same page, provide the current stage of the process you are in.</p>
                         <div className="options">
                             {[
@@ -401,6 +411,8 @@ const Eligibility = () => {
                         )}
                     </div>
                 )}
+                </motion.div>
+                </AnimatePresence>
             </div>
         </div>
     );

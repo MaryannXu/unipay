@@ -14,7 +14,7 @@ import Link from "next/link";
 import "@/styles/dashboard.scss";
 
 // A simple “menu” enumeration to track which sidebar tab is active
-type MenuOption = "home" | "tasks" | "payments" | "applications" | "balance";
+type MenuOption = "home" | "tasks" |  "applications" ;
 
 const DashboardPage = () => {
     const router = useRouter();
@@ -79,22 +79,10 @@ const DashboardPage = () => {
                         Tasks
                     </button>
                     <button
-                        className={selectedMenu === "payments" ? "active" : ""}
-                        onClick={() => handleMenuClick("payments")}
-                    >
-                        Payments
-                    </button>
-                    <button
                         className={selectedMenu === "applications" ? "active" : ""}
                         onClick={() => handleMenuClick("applications")}
                     >
                         Applications
-                    </button>
-                    <button
-                        className={selectedMenu === "balance" ? "active" : ""}
-                        onClick={() => handleMenuClick("balance")}
-                    >
-                        Balance
                     </button>
                 </nav>
             </aside>
@@ -106,11 +94,7 @@ const DashboardPage = () => {
                         <h2>Welcome to Your Dashboard</h2>
                         <p>This page is only accessible to logged-in users.</p>
                         {/* Example “Balance” card, etc. */}
-                        <div className="balance-card">
-                            <h3>Balance</h3>
-                            <p>$39,694</p>
-                            <p>University of Southern California</p>
-                        </div>
+                        
                     </div>
                 )}
 
@@ -118,13 +102,6 @@ const DashboardPage = () => {
                     <div className="dashboard-tasks">
                         <h2>Tasks</h2>
                         <p>Manage your tasks here.</p>
-                    </div>
-                )}
-
-                {selectedMenu === "payments" && (
-                    <div className="dashboard-payments">
-                        <h2>Payments</h2>
-                        <p>Manage your payments here.</p>
                     </div>
                 )}
 
@@ -156,13 +133,6 @@ const DashboardPage = () => {
                                 </button>
                             </div>
                         </div>
-                    </div>
-                )}
-
-                {selectedMenu === "balance" && (
-                    <div className="dashboard-balance">
-                        <h2>Balance</h2>
-                        <p>View your balances here.</p>
                     </div>
                 )}
             </main>
