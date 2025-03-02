@@ -1,5 +1,5 @@
 import './menu.scss';
-import { useState, useEffect, useContext } from 'react';
+import { useContext } from 'react';
 import { NavigationContext } from '../navigation/navigation';
 import { useLenis } from '@studio-freight/react-lenis';
 import { useRouter, usePathname } from 'next/navigation';
@@ -11,14 +11,9 @@ type NavItemProps = {
     soon: boolean;
 };
 
-const ITEMS = [
-    { name: 'Home', href: '/', soon: false },
-    { name: 'About', href: '#whyus', soon: false },
-    { name: 'FAQ', href: '#faq', soon: false },
-    { name: 'Contact', href: '#contact', soon: false },
-    { name: 'Student Eligibility Form', href: '/eligibility', soon: false },
-    { name: 'Investor Eligibility Form', href: '/investor-eligibility', soon: false },
-];
+type MenuNavProps = {
+    items: NavItemProps[];
+};
 
 function MenuNavItem({ index, name, href, soon }: NavItemProps) {
     const lenis = useLenis();
@@ -30,25 +25,15 @@ function MenuNavItem({ index, name, href, soon }: NavItemProps) {
         event.preventDefault();
         setIsMenuOpened(false);
 
-        if (href === '/eligibility') {
-            router.push('/eligibility');
-        } else if (href === '/investor-eligibility') {
-            router.push('/investor-eligibility');
-        } else if (href.startsWith('#')) {
-            // If the current route is not the homepage, navigate to '/'
+        if (href.startsWith('#')) {
             if (pathname !== '/') {
-                router.push('/'+href);
+                router.push('/' + href);
             } else {
-                // Already on the homepage; scroll directly.
                 lenis.isStopped = false;
                 lenis.scrollTo(href, { offset: 100 });
             }
-        } else if (href === '/') {
-            router.push('/');
         } else {
-            // For any other href, perform scrolling directly.
-            lenis.isStopped = false;
-            lenis.scrollTo(href, { offset: 100 });
+            router.push(href);
         }
     };
 
@@ -66,11 +51,11 @@ function MenuNavItem({ index, name, href, soon }: NavItemProps) {
     );
 }
 
-export default function MenuNav() {
+export default function MenuNav({ items }: MenuNavProps) {
     return (
         <nav className='menu__nav'>
             <ul className='menu__nav-list'>
-                {ITEMS.map((el, i) => (
+                {items.map((el, i) => (
                     <MenuNavItem
                         key={`${el.name}-${i}`}
                         index={i + 1}

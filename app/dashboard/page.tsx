@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { auth, db } from "@/firebaseConfig";
 import {
     collection,
@@ -13,11 +13,14 @@ import {
 import Link from "next/link";
 import "@/styles/dashboard.scss";
 
-// A simple “menu” enumeration to track which sidebar tab is active
-type MenuOption = "home" | "tasks" | "payments" | "applications" | "balance";
+// A simple "menu" enumeration to track which sidebar tab is active
+type MenuOption = "home" | "tasks" | "payments" | "applications" | "balance" | "product" ;
 
 const DashboardPage = () => {
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const product = searchParams.get("product");
+    const [selectedProduct, setSelectedProduct] = useState<string>();
     const [selectedMenu, setSelectedMenu] = useState<MenuOption>("home");
     const [loading, setLoading] = useState<boolean>(true);
 
@@ -35,10 +38,21 @@ const DashboardPage = () => {
         return () => unsubscribe();
     }, [router]);
 
-    // Whenever user clicks “Applications” in the menu,
+    // Set product as the active menu item if it exists in the URL
+    useEffect(() => {
+        if (product && ["credit", "lending", "banking"].includes(product)) {
+            handleMenuClick("product")
+            setSelectedProduct(product);
+        }
+    }, [product]);
+
+    // Whenever user clicks menu options or navigates to Applications,
     // fetch all docs from /users/<uid>/loanApplications
     const handleMenuClick = async (option: MenuOption) => {
         setSelectedMenu(option);
+        if (option !== "product" && searchParams.has("product")) {
+            router.push("/dashboard"); // Resets the URL
+        }
 
         if (option === "applications") {
             const user = auth.currentUser;
@@ -105,7 +119,7 @@ const DashboardPage = () => {
                     <div className="dashboard-home">
                         <h2>Welcome to Your Dashboard</h2>
                         <p>This page is only accessible to logged-in users.</p>
-                        {/* Example “Balance” card, etc. */}
+                        {/* Example "Balance" card, etc. */}
                         <div className="balance-card">
                             <h3>Balance</h3>
                             <p>$39,694</p>
@@ -158,13 +172,34 @@ const DashboardPage = () => {
                         </div>
                     </div>
                 )}
-
+                {/* Current balance of loans */}
                 {selectedMenu === "balance" && (
                     <div className="dashboard-balance">
                         <h2>Balance</h2>
                         <p>View your balances here.</p>
                     </div>
                 )}
+                
+                {/* Credit, Lending and Banking discover pages */}
+                {selectedMenu === "product" && selectedProduct === "credit" && (
+                    <div className="dashboard-balance">
+                        <h2>Credit</h2>
+                        <p>enter function here</p>
+                    </div>
+                )}
+                {selectedMenu === "product" && selectedProduct === "lending" && (
+                    <div className="dashboard-balance">
+                        <h2>Lending</h2>
+                        <p>enter function here</p>
+                    </div>
+                )}
+                {selectedMenu === "product" && selectedProduct === "banking" && (
+                    <div className="dashboard-balance">
+                        <h2>Banking</h2>
+                        <p>enter function here</p>
+                    </div>
+                )}
+               
             </main>
         </div>
     );

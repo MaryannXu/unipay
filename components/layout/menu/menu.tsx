@@ -5,7 +5,7 @@ import MenuNav from './menu-nav';
 import MenuSocials from './menu-socials';
 import { useLenis } from '@studio-freight/react-lenis';
 
-export default function Menu() {
+export default function Menu({items}) {
     const lenis = useLenis();
     const { isMenuOpened } = useContext(NavigationContext);
 
@@ -20,7 +20,7 @@ export default function Menu() {
     return (
         <div className={isMenuOpened ? 'menu visible' : 'menu'}>
             <div className='container menu__container'>
-                <MenuNav />
+                <MenuNav items={items}/>
             </div>
         </div>
     );

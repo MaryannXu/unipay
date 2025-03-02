@@ -41,7 +41,7 @@ const CreditScore = () => {
     ];
     //dropdown
     const [openDropdownIndex, setOpenDropdownIndex] = useState<number | null>(null);
-    const ref = useRef<HTMLDivElement>(null);
+    const ref = useRef<HTMLDivElement | null>(null);
     // Only allow logged‑in users to view this page.
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -489,8 +489,8 @@ const CreditScore = () => {
                                                 <span className="credit-weight">{factor.weight}</span>
                                             </div>
                                             
-                                            <p className="credit-status" style={{ color: scoreStatus[factor.statusKey] !== "Good" ? "red" : "green" }}>
-                                                {scoreStatus[factor.statusKey]}
+                                            <p className="credit-status" style={{ color: scoreStatus[factor.statusKey as keyof typeof scoreStatus] !== "Good" ? "red" : "green" }}>
+                                                {scoreStatus[factor.statusKey as keyof typeof scoreStatus]}
                                             </p>
 
                                             <AnimatePresence>
