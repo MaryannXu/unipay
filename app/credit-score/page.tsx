@@ -10,6 +10,7 @@ import { getAuth } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { getDatabase, ref, onValue } from "firebase/database";
 import Dropdown from "./dropdown";
+import { setLazyProp } from "next/dist/server/api-utils";
 
 const CreditScore = () => {
     const router = useRouter();
@@ -44,11 +45,23 @@ const CreditScore = () => {
     const ref = useRef<HTMLDivElement | null>(null);
     // Only allow logged‑in users to view this page.
     useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged((user) => {
+        const unsubscribe = auth.onAuthStateChanged(async (user) => {
             if (!user) {
                 router.push("/login");
             } else {
-                setLoading(false);
+                try{ 
+                    const docRef = doc(db, "users", user.uid, "creditScoreResponses");
+                    const docSnap = await getDoc(docRef);
+                    
+                    if (docSnap.exists()){
+                        router.push("/dashboard");
+                    }else{ 
+                        setLoading(false);
+                    }
+                }catch(error){ 
+                    console.error("Error checking user document:", error);
+                    setLoading(false);
+                }
             }
         });
         return () => unsubscribe();

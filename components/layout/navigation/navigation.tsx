@@ -24,11 +24,11 @@ export default function Navigation() {
     const [isMenuOpened, setIsMenuOpened] = useState(false);
     const pathname = usePathname();
 
-    const items: NavItemProps[] = pathname === '/dashboard' 
+    const items: NavItemProps[] = pathname.includes('/dashboard') 
         ? [
-            { name: 'Settings', href: '/settings', soon: false },
+            {name: 'Settings', href: '/dashboard/settings', soon: false },
             { name: 'Contact', href: '/contact', soon: false },
-            { name: 'FAQ', href: '#faq', soon: false },
+            { name: 'FAQ', href: '/faq', soon: false },
         ]
         : [
             { name: 'Home', href: '/', soon: false },

@@ -190,7 +190,7 @@ const Login = () => {
             if (additionalUserInfo?.isNewUser) {
                 router.push("/credit-score");
             } else {
-                router.push("/credit-score");
+                router.push("/dashboard");
             }
         } catch (error: any) {
             setErrorMessage("Google Sign-In failed.");

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { auth, db } from "@/firebaseConfig";
 import {
     collection,
@@ -12,14 +12,18 @@ import {
 } from "firebase/firestore";
 import Link from "next/link";
 import "@/styles/dashboard.scss";
+import { SettingsContent } from "./settings/page";
+import { HomeContent } from "./user-information/page";
 
 // A simple "menu" enumeration to track which sidebar tab is active
-type MenuOption = "home" | "tasks" | "payments" | "applications" | "balance" | "product" ;
+type MenuOption = "home" | "tasks" | "payments" | "applications" | "balance" | "product" | "settings";
 
 const DashboardPage = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
+    const pathname = usePathname();
     const product = searchParams.get("product");
+
     const [selectedProduct, setSelectedProduct] = useState<string>();
     const [selectedMenu, setSelectedMenu] = useState<MenuOption>("home");
     const [loading, setLoading] = useState<boolean>(true);
@@ -45,15 +49,25 @@ const DashboardPage = () => {
             setSelectedProduct(product);
         }
     }, [product]);
+    useEffect(() => {
+        if (pathname === "/dashboard/settings") {
+            setSelectedMenu("settings");
+        } else if (pathname === "/dashboard") {
+            // Default selection for main dashboard
+            setSelectedMenu("home");
+        }
+    }, [pathname]);
 
     // Whenever user clicks menu options or navigates to Applications,
     // fetch all docs from /users/<uid>/loanApplications
+    // if user on product or settings switch to /dashboard
     const handleMenuClick = async (option: MenuOption) => {
         setSelectedMenu(option);
-        if (option !== "product" && searchParams.has("product")) {
-            router.push("/dashboard"); // Resets the URL
+        if ((option !== "product" && searchParams.has("product")) || 
+        (option !== "settings" && searchParams.has("settings"))) {
+            router.push("/dashboard"); // Resets the URL to clean state
         }
-
+        
         if (option === "applications") {
             const user = auth.currentUser;
             if (!user) return;
@@ -121,9 +135,8 @@ const DashboardPage = () => {
                         <p>This page is only accessible to logged-in users.</p>
                         {/* Example "Balance" card, etc. */}
                         <div className="balance-card">
-                            <h3>Balance</h3>
-                            <p>$39,694</p>
-                            <p>University of Southern California</p>
+                            <h3>Your Financial Health</h3>
+                            <HomeContent/>
                         </div>
                     </div>
                 )}
@@ -199,6 +212,16 @@ const DashboardPage = () => {
                         <p>enter function here</p>
                     </div>
                 )}
+
+                {/* User Settings */}
+                {selectedMenu === "settings" && (
+                    <div className="dashboard-balance">
+                        <h2>Settings</h2>
+                        <SettingsContent/>
+                    </div>
+                )}
+
+               
                
             </main>
         </div>

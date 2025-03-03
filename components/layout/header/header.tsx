@@ -1,7 +1,7 @@
 import './header.scss';
 import Icon_logo from '../../icons/gradient_inline_unilogo.png';
 import Icon_menu from '../../icons/icon-menu';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { NavigationContext } from '../navigation/navigation';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
@@ -20,10 +20,11 @@ export default function Header() {
     const { isMenuOpened, setIsMenuOpened } = useContext(NavigationContext);
     const [selectedProduct, setSelectedProduct] = useState<MenuOption>("credit");
 
+
     const router = useRouter();
     const pathname = usePathname(); // Get current pathname
     const isLandingPage = pathname === '/'; // Determine if it's the landing page
-    const isDashboard = pathname.includes('/dashboard') || pathname.includes('/dashboard/products');
+    const isDashboard = !isLandingPage && (pathname.startsWith('/dashboard'));
 
     const handleClickMenu = () => setIsMenuOpened((prev) => !prev);
     const handleSelectProduct = (product: MenuOption) => {

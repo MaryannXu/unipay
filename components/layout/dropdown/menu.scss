@@ -1,0 +1,55 @@
+.products-dropdown-container {
+    position: absolute;
+    width: 220px; 
+    margin-top: 20px;
+}
+.products-dropdown { 
+    position: absolute;
+    top: 100%;  // Positions it directly below the parent container
+    left: 0;
+    width: 100%;
+    background-color: #fff; // Adjust as needed
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    border-radius: 4px;
+    overflow: hidden;
+
+&__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+&__item {
+  padding: 8px 12px;  // Added padding around the text
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #EDEDED;  // Changes background to green on hover
+  }
+}
+
+&__text {
+  color: #333;
+  font-size: 1rem;
+}
+}
+
+
+@media screen and (width < 768px) {
+  .header {
+    padding: 1.5rem 1.25rem;
+
+    &__nav-list {
+      grid-template-columns: 1fr 1px 8.25rem;
+      gap: 1.5rem;
+    }
+
+    &__nav-item {
+      gap: 0.5rem;
+    }
+  }
+}
