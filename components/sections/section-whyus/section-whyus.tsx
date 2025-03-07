@@ -2,7 +2,7 @@
 
 import './section-whyus.scss';
 import Image from 'next/image';
-import Icon_arrow from '../../icons/icon-arrow';
+import Icon_arrow from '@/components/icons/icon-arrow';
 import { useState } from 'react';
 
 export default function SectionWhyus() {
@@ -43,7 +43,7 @@ export default function SectionWhyus() {
                         <li
                             onMouseEnter={() => setCurrentBullet(3)}
                             className={currentBullet === 3 ? 'section-whyus__bullets-item active' : 'section-whyus__bullets-item'}>
-                            <span className='section-whyus__bullets-item-text'>Financial Reccomendations</span>
+                            <span className='section-whyus__bullets-item-text'>Financial Recomendations</span>
                             <span className='section-whyus__bullets-item-icon'>
                                 <Icon_arrow direction='right' />
                             </span>

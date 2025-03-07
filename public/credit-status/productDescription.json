@@ -1,0 +1,26 @@
+{
+    "companies": {
+      "MPower": {
+        "descriptions": [
+          "Flexible Loan for Global Scholars",
+          "Borderless Education Financing",
+          "Smart Credit-Building Loan"
+        ]
+      },
+      "Bank of America": {
+        "descriptions": [
+          "Study Now, Pay Later",
+          "No-Cosigner, Hassle-Free Loans",
+          "Credit Growth & Financial Independence"
+        ]
+      },
+      "GlobalStudentFund": {
+        "descriptions": [
+          "Empowering Students Worldwide: We provide easy-access educational loans to international students with low interest rates and flexible repayment options, ensuring students can study without financial burden.",
+          "Beyond Borders, Beyond Limits: Our financial products are designed to help students access top universities worldwide with simple application processes and no hidden fees.",
+          "Funding Future Leaders: With GlobalStudentFund, international students can secure the financing they need without worrying about credit history or collateral, focusing instead on building a brighter future."
+        ]
+      }
+    }
+  }
+  

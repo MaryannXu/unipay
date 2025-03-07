@@ -1,0 +1,28 @@
+{
+    "New Credit": {
+      "Good": "This is great! You're on the road to success in the U.S. Continue building your credit by paying your credit on time.",
+      "Mediocre": "You're almost there, but there are a few things to improve. Consider applying for new credit cards or loans to build your credit profile.",
+      "Bad": "Looks like you could use some work. Let's get you set up with our services to help you build your credit responsibly."
+    },
+    "Amounts Owed": {
+      "Good": "You're managing your credit well! Keeping your credit utilization low is key to maintaining a strong score.",
+      "Mediocre": "You're on the right track, but try to lower your balances. Paying off debts faster can boost your credit health.",
+      "Bad": "Your credit utilization is high, which can hurt your score. Consider reducing debt and making timely payments."
+    },
+    "Length of Credit History": {
+      "Good": "A long credit history shows stability. Keep your accounts open and maintain good habits.",
+      "Mediocre": "Your credit history is growing, but keeping older accounts open and in good standing will help improve it.",
+      "Bad": "A short or inconsistent credit history can make it harder to get loans. Start building history by keeping accounts active and in good standing."
+    },
+    "Credit Mix": {
+      "Good": "Great job! Having a mix of credit types, such as credit cards and loans, strengthens your profile.",
+      "Mediocre": "You're doing okay, but adding different types of credit, like an installment loan, can improve your score.",
+      "Bad": "Having only one type of credit limits your score potential. Consider diversifying your credit with different account types."
+    },
+    "Payment History": {
+      "Good": "Fantastic! A strong payment history is key to a great credit score. Keep making on-time payments.",
+      "Mediocre": "You're doing well, but occasional late payments can hurt. Set up auto-pay or reminders to stay on track.",
+      "Bad": "Late payments significantly impact your score. Prioritize making at least the minimum payments on time to improve."
+    }
+  }
+  

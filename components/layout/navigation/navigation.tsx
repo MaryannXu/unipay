@@ -26,7 +26,6 @@ export default function Navigation() {
 
     const items: NavItemProps[] = pathname.includes('/dashboard') 
         ? [
-            {name: 'Settings', href: '/dashboard/settings', soon: false },
             { name: 'Contact', href: '/contact', soon: false },
             { name: 'FAQ', href: '/faq', soon: false },
         ]

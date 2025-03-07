@@ -14,9 +14,10 @@ import Link from "next/link";
 import "@/styles/dashboard.scss";
 import { SettingsContent } from "./settings/page";
 import { HomeContent } from "./user-information/page";
+import { Services } from "./products/page";
 
 // A simple "menu" enumeration to track which sidebar tab is active
-type MenuOption = "home" | "tasks" | "payments" | "applications" | "balance" | "product" | "settings";
+type MenuOption = "home" | "my services" | "lending" | "credit" | "banking" | "product" | "settings";
 
 const DashboardPage = () => {
     const router = useRouter();
@@ -27,9 +28,6 @@ const DashboardPage = () => {
     const [selectedProduct, setSelectedProduct] = useState<string>();
     const [selectedMenu, setSelectedMenu] = useState<MenuOption>("home");
     const [loading, setLoading] = useState<boolean>(true);
-
-    // Store the list of applications from Firestore
-    const [applications, setApplications] = useState<DocumentData[]>([]);
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -67,22 +65,6 @@ const DashboardPage = () => {
         (option !== "settings" && searchParams.has("settings"))) {
             router.push("/dashboard"); // Resets the URL to clean state
         }
-        
-        if (option === "applications") {
-            const user = auth.currentUser;
-            if (!user) return;
-
-            const colRef = collection(db, "users", user.uid, "loanApplications");
-            const snap = await getDocs(colRef);
-            const apps: DocumentData[] = [];
-            snap.forEach((doc) => {
-                apps.push({
-                    id: doc.id,
-                    ...doc.data(),
-                });
-            });
-            setApplications(apps);
-        }
     };
 
     if (loading) {
@@ -101,28 +83,34 @@ const DashboardPage = () => {
                         Home
                     </button>
                     <button
-                        className={selectedMenu === "tasks" ? "active" : ""}
-                        onClick={() => handleMenuClick("tasks")}
+                        className={selectedMenu === "lending" ? "active" : ""}
+                        onClick={() => handleMenuClick("lending")}
                     >
-                        Tasks
+                        Lending
                     </button>
                     <button
-                        className={selectedMenu === "payments" ? "active" : ""}
-                        onClick={() => handleMenuClick("payments")}
+                        className={selectedMenu === "credit" ? "active" : ""}
+                        onClick={() => handleMenuClick("credit")}
                     >
-                        Payments
+                        Credit
                     </button>
                     <button
-                        className={selectedMenu === "applications" ? "active" : ""}
-                        onClick={() => handleMenuClick("applications")}
+                        className={selectedMenu === "banking" ? "active" : ""}
+                        onClick={() => handleMenuClick("banking")}
                     >
-                        Applications
+                        Banking
                     </button>
                     <button
-                        className={selectedMenu === "balance" ? "active" : ""}
-                        onClick={() => handleMenuClick("balance")}
+                        className={selectedMenu === "my services" ? "active" : ""}
+                        onClick={() => handleMenuClick("my services")}
                     >
-                        Balance
+                        My Services
+                    </button>
+                    <button
+                        className={selectedMenu === "settings" ? "active" : ""}
+                        onClick={() => handleMenuClick("settings")}
+                    >
+                        Settings
                     </button>
                 </nav>
             </aside>
@@ -134,79 +122,33 @@ const DashboardPage = () => {
                         <h2>Welcome to Your Dashboard</h2>
                         <p>This page is only accessible to logged-in users.</p>
                         {/* Example "Balance" card, etc. */}
-                        <div className="balance-card">
+                        <div className="dashboard-section">
                             <h3>Your Financial Health</h3>
                             <HomeContent/>
                         </div>
                     </div>
                 )}
 
-                {selectedMenu === "tasks" && (
-                    <div className="dashboard-tasks">
-                        <h2>Tasks</h2>
-                        <p>Manage your tasks here.</p>
+                {selectedMenu === "my services" && (
+                    <div className="dashboard-Credit">
+                        <h2>Credit</h2>
+                        <p>Manage your Credit here.</p>
                     </div>
                 )}
 
-                {selectedMenu === "payments" && (
-                    <div className="dashboard-payments">
-                        <h2>Payments</h2>
-                        <p>Manage your payments here.</p>
-                    </div>
-                )}
 
-                {selectedMenu === "applications" && (
-                    <div className="dashboard-applications">
-                        <h2>My Applications</h2>
-
-                        {/* Render existing apps from Firestore */}
-                        <div className="application-cards">
-                            {applications.map((app) => (
-                                <div key={app.id} className="application-card">
-                                    <h3>{app.step4currentUniversityName || "Untitled Application"}</h3>
-                                    <p>Status: {app.step0Verified ? "Complete" : "Incomplete"}</p>
-                                    <p>Amount: US ${app.step1totalAcademicFunding || "N/A"}</p>
-                                    <button
-                                        onClick={() => router.push(`/applications/${app.id}`)}
-                                    >
-                                        View Summary
-                                    </button>
-                                </div>
-                            ))}
-
-                            {/* Add a new application card */}
-                            <div className="application-card add-new">
-                                <h3>Add another application</h3>
-                                <p>Submit a new loan application form</p>
-                                <button onClick={() => router.push("/loan-application")}>
-                                    + New Application
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                )}
-                {/* Current balance of loans */}
-                {selectedMenu === "balance" && (
-                    <div className="dashboard-balance">
-                        <h2>Balance</h2>
-                        <p>View your balances here.</p>
-                    </div>
-                )}
-                
                 {/* Credit, Lending and Banking discover pages */}
-                {selectedMenu === "product" && selectedProduct === "credit" && (
+                {selectedMenu === "credit" && (
                     <div className="dashboard-balance">
                         <h2>Credit</h2>
-                        <p>enter function here</p>
-                    </div>
+                    <p>enter function here</p>
+                </div>
                 )}
-                {selectedMenu === "product" && selectedProduct === "lending" && (
-                    <div className="dashboard-balance">
-                        <h2>Lending</h2>
-                        <p>enter function here</p>
-                    </div>
+                {selectedMenu === "lending" && (
+                    
+                    <Services product={"lending"}/>
                 )}
-                {selectedMenu === "product" && selectedProduct === "banking" && (
+                {selectedMenu === "banking" && (
                     <div className="dashboard-balance">
                         <h2>Banking</h2>
                         <p>enter function here</p>

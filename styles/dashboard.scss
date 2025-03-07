@@ -1,6 +1,7 @@
 .dashboard-container {
   display: flex;
   height: calc(100vh - 103px);
+  
 }
 .dashboard-sidebar {
   z-index: 10;
@@ -24,13 +25,23 @@
       }
     }
   }
+
 }
 .dashboard-main {
   flex: 1;
   padding: 2rem;
   z-index: 10;
   background-color: white;
+
+  .dashboard-home{ 
+    flex-direction: column;
+    align-items: flex-start;
+  .dashboard-section{ 
+    flex-direction: column;
+  }
+  }
 }
+
 
 @media screen and (width < 1700px) {
   .dashboard-container {

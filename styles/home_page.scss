@@ -1,0 +1,39 @@
+.credit-advice-container { 
+    flex-direction: column;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    justify-content: flex-start; 
+    width: 100%;
+    max-width: 350px;
+    margin: 20px auto;
+    border-radius: 20px;
+    gap: 5px;
+}
+
+.credit-advice-item {
+    flex: 1; 
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    min-width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: left;
+}
+
+/* Description initially hidden */
+.advice-content {
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+/* Credit status */
+.credit-status {
+    font-weight: bold;
+    width: 100%;
+}
